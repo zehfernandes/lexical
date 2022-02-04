@@ -1,0 +1,22 @@
+{
+  "name": "lexical-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx webpack --mode=development --devtool eval-source-map",
+    "dev": "npx serve ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lexical": "^0.1.5"
+  },
+  "devDependencies": {
+    "serve": "^13.0.2",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
