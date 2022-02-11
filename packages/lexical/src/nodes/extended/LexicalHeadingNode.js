@@ -34,6 +34,14 @@ export class HeadingNode extends ElementNode {
     return this.__tag;
   }
 
+  getAnchorId(): string {
+    return this.getTextContent()
+      .replace(/\W/g, ' ')
+      .trim()
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+  }
+
   // View
 
   createDOM<EditorContext>(config: EditorConfig<EditorContext>): HTMLElement {
@@ -46,10 +54,18 @@ export class HeadingNode extends ElementNode {
       const className = classNames[tag];
       addClassNamesToElement(element, className);
     }
+    const anchorId = this.getAnchorId();
+    if (anchorId !== '') {
+      element.setAttribute('id', anchorId);
+    }
     return element;
   }
 
   updateDOM(prevNode: HeadingNode, dom: HTMLElement): boolean {
+    const anchorId = this.getAnchorId();
+    if (anchorId !== dom.getAttribute('id')) {
+      dom.setAttribute('id', anchorId);
+    }
     return false;
   }
 

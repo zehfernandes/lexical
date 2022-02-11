@@ -42,6 +42,7 @@ import PollPlugin from './plugins/PollPlugin';
 
 import {useSettings} from './context/SettingsContext';
 import AutoFocusPlugin from './plugins/AutoFocusPlugin';
+import ContentsPlugin from './plugins/ContentsPlugin';
 
 const skipCollaborationInit =
   window.parent != null && window.parent.frames.right === window;
@@ -105,6 +106,7 @@ export default function Editor(): React$Node {
             <ImagesPlugin />
             <LinkPlugin />
             <PollPlugin />
+            <ContentsPlugin />
           </>
         ) : (
           <>

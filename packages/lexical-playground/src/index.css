@@ -389,6 +389,10 @@ i.diagram-2 {
   background-image: url(images/icons/diagram-2.svg);
 }
 
+i.contents {
+  background-image: url(images/icons/list-nested.svg);
+}
+
 .link-editor .button.active,
 .toolbar .button.active {
   background-color: rgb(223, 232, 250);
