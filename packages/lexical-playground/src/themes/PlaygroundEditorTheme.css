@@ -88,6 +88,8 @@
   margin-top: 8px;
   margin-bottom: 8px;
   tab-size: 2;
+  white-space: 'nowrap';
+  overflow-x: 'scroll';
 }
 .PlaygroundEditorTheme__table {
   border-collapse: collapse;
