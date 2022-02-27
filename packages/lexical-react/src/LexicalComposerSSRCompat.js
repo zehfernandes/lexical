@@ -7,29 +7,29 @@
  * @flow strict
  */
 
-import type {LexicalComposerContextType} from './LexicalComposerContext';
-import type {EditorThemeClasses, LexicalEditor, LexicalNode} from 'lexical';
+import type {LexicalComposerProps} from '@react/LexicalComposer';
+import type {LexicalEditor} from 'lexical';
 
 import {
   createLexicalComposerContext,
   LexicalComposerContext,
 } from '@lexical/react/LexicalComposerContext';
-import {createEditor} from 'lexical';
+import LexicalComposer from '@react/LexicalComposer';
 import React, {useContext, useLayoutEffect, useMemo} from 'react';
+import {CAN_USE_DOM} from 'shared/canUseDOM';
 
-export type LexicalComposerProps = {
-  children: React$Node,
-  initialConfig?: {
-    editor?: LexicalEditor | null,
-    isReadOnly?: boolean,
-    namespace?: string,
-    nodes?: Array<Class<LexicalNode>>,
-    onError: (error: Error, editor: LexicalEditor) => void,
-    theme?: EditorThemeClasses,
-  },
-};
+export default function LexicalComposerSSRCompat({
+  initialConfig = {},
+  children,
+}: LexicalComposerProps): React$MixedElement {
+  return CAN_USE_DOM ? (
+    <LexicalComposer initialConfig={initialConfig}>{children}</LexicalComposer>
+  ) : (
+    <Dummy>{children}</Dummy>
+  );
+}
 
-export default function LexicalComposer({
+function Dummy({
   initialConfig = {},
   children,
 }: LexicalComposerProps): React$MixedElement {
