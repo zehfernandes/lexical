@@ -8,6 +8,7 @@
  */
 
 import * as React from 'react';
+import {useEffect} from 'react';
 
 import PlainTextPlugin from '@lexical/react/LexicalPlainTextPlugin';
 import RichTextPlugin from '@lexical/react/LexicalRichTextPlugin';
@@ -36,13 +37,16 @@ import {createWebsocketProvider} from './collaboration';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {useSharedHistoryContext} from './context/SharedHistoryContext';
 import ContentEditable from './ui/ContentEditable';
-import AutoLinkPlugin from './plugins/AutoLinkPlugin';
 import PollPlugin from './plugins/PollPlugin';
 import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
 
 import CharacterStylesPopupPlugin from './plugins/CharacterStylesPopupPlugin';
 import {useSettings} from './context/SettingsContext';
 import AutoFocusPlugin from './plugins/AutoFocusPlugin';
+import {$getRoot} from 'lexical';
+import {$createLinkNode} from 'lexical/LinkNode';
+import {$createTextNode} from 'lexical';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const skipCollaborationInit =
   window.parent != null && window.parent.frames.right === window;
@@ -66,6 +70,15 @@ export default function Editor(): React$Node {
     : 'Enter some plain text...';
   const placeholder = <Placeholder>{text}</Placeholder>;
 
+  const [editor] = useLexicalComposerContext();
+  useEffect(() => {
+    editor.update(() => {
+      const paragraph = $getRoot().getFirstChild();
+      const link = $createLinkNode('href').append($createTextNode('foo'));
+      paragraph.append(link);
+    });
+  }, [editor]);
+
   return (
     <>
       {isRichText && <ToolbarPlugin />}
@@ -82,7 +95,7 @@ export default function Editor(): React$Node {
         <KeywordsPlugin />
         <HorizontalRulePlugin />
         <SpeechToTextPlugin />
-        <AutoLinkPlugin />
+        {/* <AutoLinkPlugin /> */}
         <CharacterStylesPopupPlugin />
         {isRichText ? (
           <>
