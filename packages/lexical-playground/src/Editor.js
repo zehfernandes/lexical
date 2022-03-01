@@ -43,6 +43,7 @@ import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
 import CharacterStylesPopupPlugin from './plugins/CharacterStylesPopupPlugin';
 import {useSettings} from './context/SettingsContext';
 import AutoFocusPlugin from './plugins/AutoFocusPlugin';
+import PristinePlugin from './plugins/PristinePlugin';
 
 const skipCollaborationInit =
   window.parent != null && window.parent.frames.right === window;
@@ -125,6 +126,7 @@ export default function Editor(): React$Node {
         <ActionsPlugin isRichText={isRichText} />
       </div>
       {showTreeView && <TreeViewPlugin />}
+      <PristinePlugin />
     </>
   );
 }
