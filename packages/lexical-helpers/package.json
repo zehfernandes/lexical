@@ -15,9 +15,7 @@
   "license": "MIT",
   "version": "0.1.12",
   "peerDependencies": {
-    "lexical": "0.1.12"
-  },
-  "dependencies": {
+    "lexical": "0.1.12",
     "@lexical/list": "0.1.12",
     "@lexical/table": "0.1.12"
   },

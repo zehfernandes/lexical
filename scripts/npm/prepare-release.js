@@ -44,9 +44,6 @@ async function prepareLexicalPackage() {
     `mv ./packages/${LEXICAL_PKG}/npm/LexicalCodeHighlightNode.js ./packages/${LEXICAL_PKG}/npm/CodeHighlightNode.js`,
   );
   await exec(
-    `mv ./packages/${LEXICAL_PKG}/npm/LexicalOverflowNode.js ./packages/${LEXICAL_PKG}/npm/OverflowNode.js`,
-  );
-  await exec(
     `mv ./packages/${LEXICAL_PKG}/npm/LexicalExtendedNodes.js ./packages/${LEXICAL_PKG}/npm/LexicalExtendedNode.js`,
   );
   // Other bits
@@ -86,9 +83,6 @@ async function prepareLexicalPackage() {
   );
   await exec(
     `mv ./packages/${LEXICAL_PKG}/npm/LexicalCodeHighlightNode.js.flow ./packages/${LEXICAL_PKG}/npm/CodeHighlightNode.js.flow`,
-  );
-  await exec(
-    `mv ./packages/${LEXICAL_PKG}/npm/LexicalOverflowNode.js.flow ./packages/${LEXICAL_PKG}/npm/OverflowNode.js.flow`,
   );
   await exec(
     `mv ./packages/${LEXICAL_PKG}/npm/LexicalExtendedNodes.js.flow ./packages/${LEXICAL_PKG}/npm/LexicalExtendedNode.js.flow`,
