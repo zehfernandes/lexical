@@ -76,7 +76,7 @@ test.describe('CodeBlock', () => {
     }
   });
 
-  it('Does not wrap code block text when it extends beyond the width of the code block', async ({
+  test('Does not wrap code block text when it extends beyond the width of the code block', async ({
     page,
     isRichText,
   }) => {
