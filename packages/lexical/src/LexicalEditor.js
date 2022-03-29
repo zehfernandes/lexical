@@ -509,6 +509,13 @@ export class LexicalEditor {
     return true;
   }
   dispatchCommand(type: string, payload?: CommandPayload): boolean {
+    if (!this._listeners.command.has(type)) {
+      invariant(
+        false,
+        'dispatchCommand: Command type of "%s" not found in command map. Did you remember to call `registerCommand` first?',
+        type,
+      );
+    }
     return triggerCommandListeners(this, type, payload);
   }
   getDecorators(): {[NodeKey]: mixed} {
