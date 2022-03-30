@@ -27,6 +27,8 @@ import {
 } from 'lexical';
 import getDOMSelection from 'shared/getDOMSelection';
 
+const IGNORE_TAGS = new Set(['STYLE']);
+
 export function getHtmlContent(editor: LexicalEditor): string | null {
   const domSelection = getDOMSelection();
   // If we haven't selected a range, then don't copy anything
@@ -166,6 +168,11 @@ function $createNodesFromDOM(
   parentNode?: Node,
 ): Array<LexicalNode> {
   let lexicalNodes: Array<LexicalNode> = [];
+
+  if (IGNORE_TAGS.has(node.nodeName)) {
+    return lexicalNodes;
+  }
+
   let currentLexicalNode = null;
   const transformFunction = getConversionFunction(node, editor);
   const transformOutput = transformFunction ? transformFunction(node) : null;
@@ -178,14 +185,12 @@ function $createNodesFromDOM(
       const mapChildFunc = parentNode && forChildMap.get(parentNode.nodeName);
 
       if (mapChildFunc != null) {
-        const replaceNode = mapChildFunc(currentLexicalNode);
-
-        if (replaceNode) {
-          currentLexicalNode = replaceNode;
-        }
+        currentLexicalNode = mapChildFunc(currentLexicalNode);
       }
 
-      lexicalNodes.push(currentLexicalNode);
+      if (currentLexicalNode) {
+        lexicalNodes.push(currentLexicalNode);
+      }
     }
 
     if (transformOutput.forChild != null) {
@@ -227,9 +232,12 @@ function $generateNodesFromDOM(
   const elements: Array<Node> = dom.body ? Array.from(dom.body.childNodes) : [];
   const elementsLength = elements.length;
   for (let i = 0; i < elementsLength; i++) {
-    const lexicalNode = $createNodesFromDOM(elements[i], editor);
-    if (lexicalNode !== null) {
-      lexicalNodes = lexicalNodes.concat(lexicalNode);
+    const element = elements[i];
+    if (!IGNORE_TAGS.has(element.nodeName)) {
+      const lexicalNode = $createNodesFromDOM(element, editor);
+      if (lexicalNode !== null) {
+        lexicalNodes = lexicalNodes.concat(lexicalNode);
+      }
     }
   }
   return lexicalNodes;

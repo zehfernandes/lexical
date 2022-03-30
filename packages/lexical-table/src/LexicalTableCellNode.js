@@ -16,7 +16,12 @@ import type {
 } from 'lexical';
 
 import {addClassNamesToElement} from '@lexical/utils';
-import {$createParagraphNode, $isElementNode, GridCellNode} from 'lexical';
+import {
+  $createParagraphNode,
+  $isElementNode,
+  $isLineBreakNode,
+  GridCellNode,
+} from 'lexical';
 
 export const TableCellHeaderStates = {
   NO_STATUS: 0,
@@ -159,12 +164,20 @@ export function convertTableCellNodeElement(
 
   return {
     node: tableCellNode,
-    forChild: (node) => {
-      if (!$isElementNode(node)) {
+    forChild: (lexicalNode) => {
+      if (!$isElementNode(lexicalNode)) {
         const paragraphNode = $createParagraphNode();
-        paragraphNode.append(node);
+        if (
+          $isLineBreakNode(lexicalNode) &&
+          lexicalNode.getTextContent() === '\n'
+        ) {
+          return null;
+        }
+        paragraphNode.append(lexicalNode);
         return paragraphNode;
       }
+
+      return lexicalNode;
     },
   };
 }
