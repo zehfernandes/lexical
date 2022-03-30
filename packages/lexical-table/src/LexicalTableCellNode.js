@@ -7,11 +7,16 @@
  *
  * @flow strict
  */
-
-import type {EditorConfig, LexicalNode, NodeKey} from 'lexical';
+import type {
+  DOMConversionMap,
+  DOMConversionOutput,
+  EditorConfig,
+  LexicalNode,
+  NodeKey,
+} from 'lexical';
 
 import {addClassNamesToElement} from '@lexical/utils';
-import {GridCellNode} from 'lexical';
+import {$createParagraphNode, $isElementNode, GridCellNode} from 'lexical';
 
 export const TableCellHeaderStates = {
   NO_STATUS: 0,
@@ -37,6 +42,19 @@ export class TableCellNode extends GridCellNode {
       node.__width,
       node.__key,
     );
+  }
+
+  static convertDOM(): DOMConversionMap | null {
+    return {
+      td: (node: Node) => ({
+        conversion: convertTableCellNodeElement,
+        priority: 0,
+      }),
+      th: (node: Node) => ({
+        conversion: convertTableCellNodeElement,
+        priority: 0,
+      }),
+    };
   }
 
   constructor(
@@ -126,6 +144,29 @@ export class TableCellNode extends GridCellNode {
   canBeEmpty(): false {
     return false;
   }
+}
+
+export function convertTableCellNodeElement(
+  domNode: Node,
+): DOMConversionOutput {
+  const nodeName = domNode.nodeName.toLowerCase();
+
+  const tableCellNode = $createTableCellNode(
+    nodeName === 'th'
+      ? TableCellHeaderStates.ROW
+      : TableCellHeaderStates.NO_STATUS,
+  );
+
+  return {
+    node: tableCellNode,
+    forChild: (node) => {
+      if (!$isElementNode(node)) {
+        const paragraphNode = $createParagraphNode();
+        paragraphNode.append(node);
+        return paragraphNode;
+      }
+    },
+  };
 }
 
 export function $createTableCellNode(
