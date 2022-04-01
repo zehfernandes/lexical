@@ -39,6 +39,7 @@ import {
   $isElementNode,
   $isLineBreakNode,
   $isRangeSelection,
+  $isRootNode,
   $isTextNode,
   ElementNode,
 } from '.';
@@ -950,4 +951,10 @@ export function isFirefoxClipboardEvents(): boolean {
     inputType === 'insertFromPaste' ||
     inputType === 'insertFromPasteAsQuotation'
   );
+}
+
+export function $textContentRequiresDoubleLinebreakAtEnd(
+  node: ElementNode,
+): boolean {
+  return !$isRootNode(node) && !node.isLastChild() && !node.isInline();
 }

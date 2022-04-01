@@ -44,6 +44,7 @@ import {
 } from './LexicalConstants';
 import {EditorState} from './LexicalEditorState';
 import {
+  $textContentRequiresDoubleLinebreakAtEnd,
   cloneDecorators,
   getDOMTextNode,
   getTextDirection,
@@ -173,6 +174,10 @@ function createNode(
       setElementFormat(dom, format);
     }
     reconcileElementTerminatingLineBreak(null, children, dom);
+    if ($textContentRequiresDoubleLinebreakAtEnd(node)) {
+      subTreeTextContent += '(newline2)';
+      editorTextContent += '(newline2)';
+    }
   } else {
     if ($isDecoratorNode(node)) {
       const decorator = node.decorate(activeEditor);
@@ -378,12 +383,13 @@ function reconcileChildrenWithDirection(
 ): void {
   const previousSubTreeDirectionTextContent = subTreeDirectionedTextContent;
   subTreeDirectionedTextContent = '';
-  reconcileChildren(prevChildren, nextChildren, dom);
+  reconcileChildren(element, prevChildren, nextChildren, dom);
   reconcileBlockDirection(element, dom);
   subTreeDirectionedTextContent = previousSubTreeDirectionTextContent;
 }
 
 function reconcileChildren(
+  element: ElementNode,
   prevChildren: Array<NodeKey>,
   nextChildren: Array<NodeKey>,
   dom: HTMLElement,
@@ -407,6 +413,7 @@ function reconcileChildren(
     if (nextChildrenLength !== 0) {
       createChildren(nextChildren, 0, nextChildrenLength - 1, dom, null);
     }
+    // return;
   } else if (nextChildrenLength === 0) {
     if (prevChildrenLength !== 0) {
       // $FlowFixMe: internal field
@@ -429,9 +436,11 @@ function reconcileChildren(
       nextChildren,
       prevChildrenLength,
       nextChildrenLength,
+      element,
       dom,
     );
   }
+  subTreeTextContent += '(newline3)';
   // $FlowFixMe: internal field
   dom.__lexicalTextContent = subTreeTextContent;
   subTreeTextContent = previousSubTreeTextContent + subTreeTextContent;
@@ -468,7 +477,7 @@ function reconcileNode(
       if (previousSubTreeDirectionTextContent !== undefined) {
         subTreeDirectionedTextContent += previousSubTreeDirectionTextContent;
       }
-    } else if (!$isDecoratorNode(prevNode)) {
+    } else {
       const text = prevNode.getTextContent();
       if ($isTextNode(prevNode) && !prevNode.isDirectionless()) {
         subTreeDirectionedTextContent += text;
@@ -519,15 +528,21 @@ function reconcileNode(
         reconcileElementTerminatingLineBreak(prevChildren, nextChildren, dom);
       }
     }
+    if ($textContentRequiresDoubleLinebreakAtEnd(nextNode)) {
+      subTreeTextContent += '(newline)';
+      editorTextContent += '(newline)';
+    }
   } else {
+    const text = nextNode.getTextContent();
     if ($isDecoratorNode(nextNode)) {
       const decorator = nextNode.decorate(activeEditor);
       if (decorator !== null) {
         reconcileDecorator(key, decorator);
       }
+      subTreeTextContent += text;
+      editorTextContent += text;
     } else {
       // Handle text content, for LTR, LTR cases.
-      const text = nextNode.getTextContent();
       if ($isTextNode(nextNode) && !nextNode.isDirectionless()) {
         subTreeDirectionedTextContent += text;
       }
@@ -579,6 +594,7 @@ function reconcileNodeChildren(
   nextChildren: Array<NodeKey>,
   prevChildrenLength: number,
   nextChildrenLength: number,
+  element: ElementNode,
   dom: HTMLElement,
 ): void {
   const prevEndIndex = prevChildrenLength - 1;
