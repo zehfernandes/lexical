@@ -251,6 +251,7 @@ export type DOMConversionFn = (
 ) => DOMConversionOutput;
 export type DOMChildConversion = (
   lexicalNode: LexicalNode,
+  parentLexicalNode: ?(LexicalNode | null),
 ) => ?(LexicalNode | void | null);
 export type DOMConversionMap = Record<
   NodeName,

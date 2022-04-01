@@ -165,7 +165,7 @@ function $createNodesFromDOM(
   node: Node,
   editor: LexicalEditor,
   forChildMap: Map<string, DOMChildConversion> = new Map(),
-  parentNode?: Node,
+  parentLexicalNode: ?LexicalNode | null,
 ): Array<LexicalNode> {
   let lexicalNodes: Array<LexicalNode> = [];
 
@@ -182,10 +182,15 @@ function $createNodesFromDOM(
     postTransform = transformOutput.after;
     currentLexicalNode = transformOutput.node;
     if (currentLexicalNode !== null) {
-      const mapChildFunc = parentNode && forChildMap.get(parentNode.nodeName);
+      for (const [, forChildFunction] of forChildMap) {
+        currentLexicalNode = forChildFunction(
+          currentLexicalNode,
+          parentLexicalNode,
+        );
 
-      if (mapChildFunc != null) {
-        currentLexicalNode = mapChildFunc(currentLexicalNode);
+        if (!currentLexicalNode) {
+          break;
+        }
       }
 
       if (currentLexicalNode) {
@@ -204,7 +209,12 @@ function $createNodesFromDOM(
   let childLexicalNodes = [];
   for (let i = 0; i < children.length; i++) {
     childLexicalNodes.push(
-      ...$createNodesFromDOM(children[i], editor, forChildMap, node),
+      ...$createNodesFromDOM(
+        children[i],
+        editor,
+        forChildMap,
+        currentLexicalNode,
+      ),
     );
   }
   if (postTransform != null) {

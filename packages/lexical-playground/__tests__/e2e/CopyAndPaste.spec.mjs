@@ -1331,8 +1331,8 @@ test.describe('CopyAndPaste', () => {
       html`
         <p class="PlaygroundEditorTheme__paragraph">
           <a
-            class="PlaygroundEditorTheme__link PlaygroundEditorTheme__ltr"
             href="https://facebook.com/"
+            class="PlaygroundEditorTheme__link PlaygroundEditorTheme__ltr"
             dir="ltr"
           >
             <span data-lexical-text="true">Facebook!</span>
