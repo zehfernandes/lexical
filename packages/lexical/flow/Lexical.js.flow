@@ -118,6 +118,10 @@ type DOMConversionCache = Map<
   Array<(node: Node) => DOMConversion | null>,
 >;
 
+declare export class Command<T> {
+  type: string;
+}
+
 declare export class LexicalEditor {
   _parentEditor: null | LexicalEditor;
   _rootElement: null | HTMLElement;
@@ -158,6 +162,8 @@ declare export class LexicalEditor {
     listener: CommandListener,
     priority: CommandListenerPriority,
   ): () => void;
+  execCommand2<T>(type: Command<T>, payload: T): void;
+  registerCommand2<T>(type: Command<T>, payload: (T) => boolean): void;
   registerReadOnlyListener(listener: ReadOnlyListener): () => void;
   registerMutationListener(
     klass: Class<LexicalNode>,
