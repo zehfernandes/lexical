@@ -30,7 +30,6 @@ export async function initialize({
   isCollab,
   isCharLimit,
   isCharLimitUtf8,
-  showNestedEditorTreeView,
 }) {
   const appSettings = {};
   appSettings.isRichText = IS_RICH_TEXT;
@@ -40,7 +39,7 @@ export async function initialize({
     appSettings.isCollab = isCollab;
     appSettings.collabId = uuidv4();
   }
-  if (showNestedEditorTreeView === undefined) {
+  if (appSettings.showNestedEditorTreeView === undefined) {
     appSettings.showNestedEditorTreeView = true;
   }
   appSettings.isCharLimit = !!isCharLimit;

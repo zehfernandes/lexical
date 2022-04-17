@@ -47,7 +47,6 @@ import {
   $isRangeSelection,
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
-  COMMAND_PRIORITY_CRITICAL,
   COMMAND_PRIORITY_LOW,
   ElementNode,
   FORMAT_ELEMENT_COMMAND,
@@ -689,7 +688,7 @@ export default function ToolbarPlugin(): React$Node {
         setActiveEditor(newEditor);
         return false;
       },
-      COMMAND_PRIORITY_CRITICAL,
+      COMMAND_PRIORITY_LOW,
     );
   }, [editor, updateToolbar]);
 
@@ -706,7 +705,7 @@ export default function ToolbarPlugin(): React$Node {
           setCanUndo(payload);
           return false;
         },
-        COMMAND_PRIORITY_CRITICAL,
+        COMMAND_PRIORITY_LOW,
       ),
       activeEditor.registerCommand(
         CAN_REDO_COMMAND,
@@ -714,7 +713,7 @@ export default function ToolbarPlugin(): React$Node {
           setCanRedo(payload);
           return false;
         },
-        COMMAND_PRIORITY_CRITICAL,
+        COMMAND_PRIORITY_LOW,
       ),
     );
   }, [activeEditor, updateToolbar]);
