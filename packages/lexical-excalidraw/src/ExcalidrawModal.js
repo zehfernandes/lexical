@@ -17,8 +17,8 @@ import {useEffect, useRef, useState} from 'react';
 // $FlowFixMe: Flow doesn't see react-dom module
 import {createPortal} from 'react-dom';
 
-import Button from '../../ui/Button';
-import Modal from '../../ui/Modal';
+import Button from '../../lexical-playground/src/ui/Button';
+import Modal from '../../lexical-playground/src/ui/Modal';
 
 export type ExcalidrawElementFragment = {
   isDeleted?: boolean,

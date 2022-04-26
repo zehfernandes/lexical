@@ -8,7 +8,7 @@
  */
 
 import type {ExcalidrawElementFragment} from './ExcalidrawModal';
-import type {EditorConfig, LexicalEditor, LexicalNode, NodeKey} from 'lexical';
+import type {EditorConfig, LexicalEditor, LexicalNode, NodeKey, LexicalCommand} from 'lexical';
 
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import useLexicalNodeSelection from '@lexical/react/useLexicalNodeSelection';
@@ -22,11 +22,12 @@ import {
   DecoratorNode,
   KEY_BACKSPACE_COMMAND,
   KEY_DELETE_COMMAND,
+  createCommand,
 } from 'lexical';
 import * as React from 'react';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
-import ImageResizer from '../../ui/ImageResizer';
+import ImageResizer from '../../lexical-playground/src/ui/ImageResizer';
 import ExcalidrawImage from './ExcalidrawImage';
 import ExcalidrawModal from './ExcalidrawModal';
 
@@ -252,3 +253,5 @@ export function $createExcalidrawNode(): ExcalidrawNode {
 export function $isExcalidrawNode(node: ?LexicalNode): boolean %checks {
   return node instanceof ExcalidrawNode;
 }
+
+export const INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void> = createCommand();

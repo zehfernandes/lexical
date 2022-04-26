@@ -32,6 +32,7 @@ const DEFAULT_PKGS = [
   'lexical-link',
   'lexical-text',
   'lexical-markdown',
+  'lexical-excalidraw',
 ];
 
 module.exports = {

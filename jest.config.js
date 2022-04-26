@@ -66,6 +66,7 @@ module.exports = {
         '^@lexical/selection$':
           '<rootDir>/packages/lexical-selection/src/index.js',
         '^@lexical/table$': '<rootDir>/packages/lexical-table/src/index.js',
+        '^@lexical/excalidraw$': '<rootDir>/packages/lexical-excalidraw/src/index.js',
         '^@lexical/text$': '<rootDir>/packages/lexical-text/src/index.js',
         '^@lexical/utils$': '<rootDir>/packages/lexical-utils/src/index.js',
         '^@lexical/yjs$': '<rootDir>/packages/lexical-yjs/src/index.js',

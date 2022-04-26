@@ -7,20 +7,15 @@
  * @flow strict
  */
 
-import type {LexicalCommand} from 'lexical';
-
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {
   $getSelection,
   $isRangeSelection,
   COMMAND_PRIORITY_EDITOR,
-  createCommand,
 } from 'lexical';
 import {useEffect} from 'react';
 
-import {$createExcalidrawNode, ExcalidrawNode} from '../nodes/ExcalidrawNode';
-
-export const INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void> = createCommand();
+import {$createExcalidrawNode, ExcalidrawNode, INSERT_EXCALIDRAW_COMMAND} from '@lexical/excalidraw';
 
 export default function ExcalidrawPlugin(): React$Node {
   const [editor] = useLexicalComposerContext();

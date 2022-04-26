@@ -29,6 +29,7 @@ const packages = {
   '@lexical/text': 'lexical-text',
   '@lexical/utils': 'lexical-utils',
   '@lexical/yjs': 'lexical-yjs',
+  '@lexical/excalidraw': 'lexical-excalidraw',
   lexical: 'lexical',
   'lexical-playground': 'lexical-playground',
   shared: 'shared',

@@ -61,6 +61,7 @@ const wwwMappings = {
   '@lexical/selection': 'LexicalSelection',
   '@lexical/table': 'LexicalTable',
   '@lexical/text': 'LexicalText',
+  '@lexical/excalidraw': 'LexicalExcalidraw',
   '@lexical/utils': 'LexicalUtils',
   '@lexical/yjs': 'LexicalYjs',
   lexical: 'Lexical',
@@ -120,6 +121,7 @@ const externals = [
   '@lexical/overflow',
   '@lexical/link',
   '@lexical/markdown',
+  '@lexical/excalidraw',
   'react-dom',
   'react',
   'yjs',
@@ -324,6 +326,17 @@ const packages = [
     name: 'Lexical Table',
     outputPath: './packages/lexical-table/dist/',
     sourcePath: './packages/lexical-table/src/',
+  },
+  {
+    modules: [
+      {
+        outputFileName: 'LexicalExcalidraw',
+        sourceFileName: 'index.js',
+      },
+    ],
+    name: 'Lexical Excalidraw',
+    outputPath: './packages/lexical-excalidraw/dist/',
+    sourcePath: './packages/lexical-excalidraw/src/',
   },
   {
     modules: [

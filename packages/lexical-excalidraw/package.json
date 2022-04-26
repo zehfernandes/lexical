@@ -1,0 +1,25 @@
+{
+  "name": "@lexical/excalidraw",
+  "description": "This package provides the Excalidraw feature for Lexical enabling diagrams.",
+  "keywords": [
+    "lexical",
+    "editor",
+    "rich-text",
+    "diagram",
+    "excalidraw"
+  ],
+  "license": "MIT",
+  "version": "0.2.4",
+  "main": "LexicalTable.js",
+  "peerDependencies": {
+    "lexical": "0.2.4"
+  },
+  "dependencies": {
+    "@lexical/utils": "0.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/lexical",
+    "directory": "packages/lexical-table"
+  }
+}

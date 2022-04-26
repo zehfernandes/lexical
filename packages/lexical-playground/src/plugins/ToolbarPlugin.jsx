@@ -36,6 +36,7 @@ import {
   $wrapLeafNodesInElements,
 } from '@lexical/selection';
 import {INSERT_TABLE_COMMAND} from '@lexical/table';
+import {INSERT_EXCALIDRAW_COMMAND} from '@lexical/excalidraw';
 import {$getNearestNodeOfType, mergeRegister} from '@lexical/utils';
 import {
   $createParagraphNode,
@@ -74,7 +75,6 @@ import KatexEquationAlterer from '../ui/KatexEquationAlterer';
 import LinkPreview from '../ui/LinkPreview';
 import TextInput from '../ui/TextInput';
 import {INSERT_EQUATION_COMMAND} from './EquationsPlugin';
-import {INSERT_EXCALIDRAW_COMMAND} from './ExcalidrawPlugin';
 import {INSERT_IMAGE_COMMAND} from './ImagesPlugin';
 import {INSERT_POLL_COMMAND} from './PollPlugin';
 import {INSERT_TWEET_COMMAND} from './TwitterPlugin';
