@@ -7,6 +7,11 @@
  * @flow strict
  */
 
+import {
+  $createExcalidrawNode,
+  ExcalidrawNode,
+  INSERT_EXCALIDRAW_COMMAND,
+} from '@lexical/excalidraw';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {
   $getSelection,
@@ -15,9 +20,7 @@ import {
 } from 'lexical';
 import {useEffect} from 'react';
 
-import {$createExcalidrawNode, ExcalidrawNode, INSERT_EXCALIDRAW_COMMAND} from '@lexical/excalidraw';
-
-export default function ExcalidrawPlugin(): React$Node {
+export default function ExcalidrawPlugin(): null {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -27,6 +30,8 @@ export default function ExcalidrawPlugin(): React$Node {
       );
     }
 
+    // TODO move register into @excalidraw
+    // I.e. registerExcalidrawListener like registerMarkdownShortcuts
     return editor.registerCommand(
       INSERT_EXCALIDRAW_COMMAND,
       () => {

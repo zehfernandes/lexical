@@ -8,7 +8,13 @@
  */
 
 import type {ExcalidrawElementFragment} from './ExcalidrawModal';
-import type {EditorConfig, LexicalEditor, LexicalNode, NodeKey, LexicalCommand} from 'lexical';
+import type {
+  EditorConfig,
+  LexicalCommand,
+  LexicalEditor,
+  LexicalNode,
+  NodeKey,
+} from 'lexical';
 
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import useLexicalNodeSelection from '@lexical/react/useLexicalNodeSelection';
@@ -19,10 +25,10 @@ import {
   $isNodeSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_LOW,
+  createCommand,
   DecoratorNode,
   KEY_BACKSPACE_COMMAND,
   KEY_DELETE_COMMAND,
-  createCommand,
 } from 'lexical';
 import * as React from 'react';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -30,6 +36,8 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import ImageResizer from '../../lexical-playground/src/ui/ImageResizer';
 import ExcalidrawImage from './ExcalidrawImage';
 import ExcalidrawModal from './ExcalidrawModal';
+
+// TODO maybe move this into ExcalidrawNode.jsx and have a clean index.js that only exports stuff
 
 function ExcalidrawComponent({
   nodeKey,

@@ -1,0 +1,24 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict
+ */
+
+import type {LexicalCommand, LexicalNode} from 'lexical';
+
+import {DecoratorNode} from 'lexical';
+
+export class ExcalidrawNode extends DecoratorNode<React$Node> {
+  // TODO some stuff here
+}
+
+declare export function $createExcalidrawNode(): ExcalidrawNode;
+
+declare export function $isExcalidrawNode(
+  node: ?LexicalNode,
+): boolean %checks(node instanceof ExcalidrawNode);
+
+declare export var INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void>;

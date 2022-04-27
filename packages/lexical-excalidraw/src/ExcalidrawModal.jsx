@@ -17,6 +17,8 @@ import {useEffect, useRef, useState} from 'react';
 // $FlowFixMe: Flow doesn't see react-dom module
 import {createPortal} from 'react-dom';
 
+// TODO No imports from playground; copy-paste the modal and create an issue to track the need to
+// abstract the modal
 import Button from '../../lexical-playground/src/ui/Button';
 import Modal from '../../lexical-playground/src/ui/Modal';
 
