@@ -169,7 +169,7 @@ export function $isRootTextContentEmpty(
   if (isEditorComposing) {
     return false;
   }
-  let text = $rootTextContentCurry();
+  let text = $rootTextContent();
   if (trim) {
     text = text.trim();
   }
@@ -183,7 +183,7 @@ export function $isRootTextContentEmptyCurry(
   return () => $isRootTextContentEmpty(isEditorComposing, trim);
 }
 
-export function $rootTextContentCurry(): string {
+export function $rootTextContent(): string {
   const root = $getRoot();
   return root.getTextContent();
 }

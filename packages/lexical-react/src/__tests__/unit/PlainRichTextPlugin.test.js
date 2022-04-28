@@ -15,7 +15,7 @@ import {OverflowNode} from '@lexical/overflow';
 import LexicalContentEditable from '@lexical/react/LexicalContentEditable';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {TableCellNode, TableNode, TableRowNode} from '@lexical/table';
-import {$rootTextContentCurry} from '@lexical/text';
+import {$rootTextContent} from '@lexical/text';
 import {
   $createParagraphNode,
   $createTextNode,
@@ -111,7 +111,7 @@ describe('LexicalNodeHelpers tests', () => {
         reactRoot.render(<App />);
       });
 
-      const text = editor.getEditorState().read($rootTextContentCurry);
+      const text = editor.getEditorState().read($rootTextContent);
       expect(text).toBe('foo');
     });
   }
@@ -220,7 +220,7 @@ describe('LexicalNodeHelpers tests', () => {
       });
 
       await editor.getEditorState().read(() => {
-        expect($rootTextContentCurry()).toBe('foo');
+        expect($rootTextContent()).toBe('foo');
         expect($getSelection().anchor.getNode().getTextContent()).toBe('foo');
         expect($getSelection().focus.getNode().getTextContent()).toBe('foo');
       });
