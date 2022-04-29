@@ -847,10 +847,22 @@ export class RangeSelection implements BaseSelection {
       const lastNodeChildren = lastElement.getChildren();
       const selectedNodesSet = new Set(selectedNodes);
       const firstAndLastElementsAreEqual = firstElement.is(lastElement);
-
-      // If the last element is an "inline" element, don't move it's text nodes to the first node.
-      // Instead, preserve the "inline" element's children and append to the first element.
-      if (!lastElement.canBeEmpty() && firstElement !== lastElement) {
+      if (
+        lastElement.isInline() &&
+        firstElement.isInline() &&
+        !firstAndLastElementsAreEqual
+      ) {
+        const lastElementParent = lastElement.getParentOrThrow();
+        const children = lastElementParent.getChildren();
+        let target = firstElement;
+        children.forEach((child) => {
+          target.insertAfter(child);
+          target = child;
+        });
+        markedNodeKeysForKeep.delete(lastElementParent.getKey());
+      } else if (!lastElement.canBeEmpty() && !firstAndLastElementsAreEqual) {
+        // If the last element is an "inline" element, don't move it's text nodes to the first node.
+        // Instead, preserve the "inline" element's children and append to the first element.
         firstElement.append(lastElement);
       } else {
         for (let i = lastNodeChildren.length - 1; i >= 0; i--) {
@@ -899,7 +911,6 @@ export class RangeSelection implements BaseSelection {
           }
         }
       }
-
       // Ensure we do splicing after moving of nodes, as splicing
       // can have side-effects (in the case of hashtags).
       if (!$isTokenOrInert(firstNode)) {

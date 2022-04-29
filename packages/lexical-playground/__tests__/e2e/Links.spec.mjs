@@ -1145,4 +1145,56 @@ test.describe('Links', () => {
       {ignoreClasses: true},
     );
   });
+
+  test('Can handle pressing Delete at the end of a line when selection is at the beginning of a Link.', async ({
+    page,
+  }) => {
+    await focusEditor(page);
+    await page.keyboard.type('Hello awesome');
+    await selectAll(page);
+    await click(page, '.link');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.type('world');
+
+    await moveToLineBeginning(page);
+    await moveRight(page, 6);
+
+    await page.keyboard.press('Enter');
+
+    await assertHTML(
+      page,
+      html`
+        <p dir="ltr">
+          <a dir="ltr" href="https://">
+            <span data-lexical-text="true">Hello</span>
+          </a>
+        </p>
+        <p dir="ltr">
+          <a dir="ltr" href="https://">
+            <span data-lexical-text="true">awesome</span>
+          </a>
+          <span data-lexical-text="true">world</span>
+        </p>
+      `,
+      {ignoreClasses: true},
+    );
+
+    await page.keyboard.press('Backspace');
+
+    await assertHTML(
+      page,
+      html`
+        <p dir="ltr">
+          <a dir="ltr" href="https://">
+            <span data-lexical-text="true">Hello</span>
+          </a>
+          <a dir="ltr" href="https://">
+            <span data-lexical-text="true">awesome</span>
+          </a>
+          <span data-lexical-text="true">world</span>
+        </p>
+      `,
+      {ignoreClasses: true},
+    );
+  });
 });
