@@ -21,9 +21,9 @@ const GITHUB_REPO_URL = 'https://github.com/facebook/lexical'; // TODO: Update w
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   baseUrl: '/',
-
+  description:
+    'An extensible text editor framework that does things differently. Lexical places an emphasis on reliability, accessibility and performance.',
   favicon: 'img/favicon.ico',
-
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   organizationName: 'facebook',
@@ -49,12 +49,9 @@ const config = {
       }),
     ],
   ],
-
   // Usually your GitHub org/user name.
   projectName: 'lexical',
-
   tagline: 'An extensible text editor framework that does things differently',
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig & import('@docusaurus/theme-search-algolia').ThemeConfig} */
     ({
@@ -151,9 +148,7 @@ const config = {
         theme: lightCodeTheme,
       },
     }),
-
   title: TITLE,
-
   url: 'https://lexical.dev',
 };
 
