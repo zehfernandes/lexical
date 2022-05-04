@@ -10,6 +10,7 @@ import type {
   EditorConfig,
   EditorThemeClasses,
   LexicalEditor,
+  TextNodeThemeClasses,
 } from '../LexicalEditor';
 import type {
   DOMConversionMap,
@@ -35,14 +36,23 @@ export class ParagraphNode extends ElementNode {
 
   createDOM(config: EditorConfig): HTMLElement {
     const dom = document.createElement('p');
-    const classNames = getCachedClassNameArray<EditorThemeClasses>(
+    const paragraphClassNames = getCachedClassNameArray<EditorThemeClasses>(
       config.theme,
       'paragraph',
     );
-    if (classNames !== undefined) {
-      const domClassList = dom.classList;
-      domClassList.add(...classNames);
+
+    const baseTextClassNames =
+      config.theme.text &&
+      getCachedClassNameArray<TextNodeThemeClasses>(config.theme.text, 'base');
+
+    const domClassList = dom.classList;
+    if (paragraphClassNames !== undefined) {
+      domClassList.add(...paragraphClassNames);
     }
+    if (baseTextClassNames !== undefined) {
+      domClassList.add(...baseTextClassNames);
+    }
+
     return dom;
   }
   updateDOM(prevNode: ParagraphNode, dom: HTMLElement): boolean {
