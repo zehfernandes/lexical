@@ -96,6 +96,7 @@ export type EditorThemeClasses = {
 };
 
 export type EditorConfig = {
+  defaultSelection: 'start' | 'end',
   disableEvents?: boolean,
   namespace: string,
   theme: EditorThemeClasses,
@@ -228,6 +229,7 @@ function initializeConversionCache(nodes: RegisteredNodes): DOMConversionCache {
 }
 
 export function createEditor(editorConfig?: {
+  defaultSelection?: 'start' | 'end',
   disableEvents?: boolean,
   editorState?: EditorState,
   namespace?: string,
@@ -242,6 +244,7 @@ export function createEditor(editorConfig?: {
   const theme = config.theme || {};
   const parentEditor = config.parentEditor || null;
   const disableEvents = config.disableEvents || false;
+  const defaultSelection = config.defaultSelection || 'start';
   const editorState = createEmptyEditorState();
   const initialEditorState = config.editorState;
   const nodes = [
@@ -270,6 +273,7 @@ export function createEditor(editorConfig?: {
     parentEditor,
     registeredNodes,
     {
+      defaultSelection,
       disableEvents,
       namespace,
       theme,
@@ -600,7 +604,11 @@ export class LexicalEditor {
             // Marking the selection dirty will force the selection back to it
             selection.dirty = true;
           } else if (root.getChildrenSize() !== 0) {
-            root.selectEnd();
+            if (this._config.defaultSelection === 'end') {
+              root.selectEnd();
+            } else if (this._config.defaultSelection === 'start') {
+              root.selectStart();
+            }
           }
         },
         {

@@ -232,6 +232,7 @@ export type EditorThemeClasses = {
       >;
 };
 export type EditorConfig = {
+  defaultSelection: 'start' | 'end';
   namespace: string;
   theme: EditorThemeClasses;
   disableEvents?: boolean;
@@ -244,6 +245,7 @@ export const COMMAND_PRIORITY_HIGH = 3;
 export const COMMAND_PRIORITY_CRITICAL = 4;
 export type IntentionallyMarkedAsDirtyElement = boolean;
 export function createEditor(editorConfig?: {
+  defaultSelection?: 'start' | 'end';
   namespace?: string;
   editorState?: EditorState;
   theme?: EditorThemeClasses;

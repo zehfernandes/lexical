@@ -10,6 +10,7 @@ import {Class} from 'utility-types';
 import type {EditorThemeClasses, LexicalEditor, LexicalNode} from 'lexical';
 type Props = {
   initialConfig: {
+    defaultSelection?: 'start' | 'end';
     editor__DEPRECATED?: LexicalEditor | null;
     readOnly?: boolean;
     namespace?: string;

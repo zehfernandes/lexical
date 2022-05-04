@@ -21,6 +21,7 @@ import useLayoutEffect from 'shared/useLayoutEffect';
 type Props = {
   children: React$Node,
   initialConfig: $ReadOnly<{
+    defaultSelection?: 'start' | 'end',
     editor__DEPRECATED?: LexicalEditor | null,
     namespace?: string,
     nodes?: $ReadOnlyArray<Class<LexicalNode>>,
@@ -41,6 +42,7 @@ export default function LexicalComposer({
         namespace,
         editor__DEPRECATED: initialEditor,
         nodes,
+        defaultSelection,
         onError,
       } = initialConfig;
 
@@ -52,6 +54,7 @@ export default function LexicalComposer({
 
       if (editor === null) {
         const newEditor = createEditor({
+          defaultSelection,
           namespace,
           nodes,
           onError: (error) => onError(error, newEditor),

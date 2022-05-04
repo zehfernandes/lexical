@@ -233,6 +233,7 @@ export type EditorThemeClasses = {
   [string]: EditorThemeClassName | {[string]: EditorThemeClassName},
 };
 export type EditorConfig = {
+  defaultSelection: 'start' | 'end',
   namespace: string,
   theme: EditorThemeClasses,
   disableEvents?: boolean,
@@ -246,6 +247,7 @@ export const COMMAND_PRIORITY_CRITICAL = 4;
 
 export type IntentionallyMarkedAsDirtyElement = boolean;
 declare export function createEditor(editorConfig?: {
+  defaultSelection?: 'start' | 'end',
   namespace?: string,
   editorState?: EditorState,
   theme?: EditorThemeClasses,
