@@ -58,8 +58,6 @@ const theme: EditorThemeClasses = {
   link: 'PlaygroundEditorTheme__link',
   list: {
     listitem: 'PlaygroundEditorTheme__listItem',
-    listitemChecked: 'PlaygroundEditorTheme__listItemChecked',
-    listitemUnchecked: 'PlaygroundEditorTheme__listItemUnchecked',
     nested: {
       listitem: 'PlaygroundEditorTheme__nestedListItem',
     },
@@ -81,6 +79,7 @@ const theme: EditorThemeClasses = {
   tableCell: 'PlaygroundEditorTheme__tableCell',
   tableCellHeader: 'PlaygroundEditorTheme__tableCellHeader',
   text: {
+    base: 'PlaygroundEditorTheme__base',
     bold: 'PlaygroundEditorTheme__textBold',
     code: 'PlaygroundEditorTheme__textCode',
     italic: 'PlaygroundEditorTheme__textItalic',
