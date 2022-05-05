@@ -2199,7 +2199,13 @@ function internalCreateRangeSelection(
     anchorOffset = domSelection.anchorOffset;
     focusOffset = domSelection.focusOffset;
   } else {
-    return lastSelection.clone();
+    const selection = lastSelection.clone();
+    // if we're focusing the editor, the DOM selection state will be incorrect
+    // and we have to reconcile the cloned Lexical selection even though it's unmodified
+    if (eventType === 'focus') {
+      selection.dirty = true;
+    }
+    return selection;
   }
   // Let's resolve the text nodes from the offsets and DOM nodes we have from
   // native selection.
