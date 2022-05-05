@@ -40,6 +40,16 @@ module.exports = {
         'no-console': OFF,
       },
     },
+    {
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+      ],
+      files: ['packages/**/*.ts', 'packages/**/*.tsx'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+    },
   ],
 
   parser: 'babel-eslint',
