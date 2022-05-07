@@ -306,8 +306,8 @@ export type DOMConversionFn = (
 ) => DOMConversionOutput;
 export type DOMChildConversion = (
   lexicalNode: LexicalNode,
-  parentLexicalNode: LexicalNode | null,
-) => LexicalNode | void | null;
+  parentLexicalNode: LexicalNode | null | undefined,
+) => LexicalNode | null;
 export type DOMConversionMap = Record<
   NodeName,
   (node: Node) => DOMConversion | null
@@ -705,6 +705,11 @@ export declare class ElementNode extends LexicalNode {
   canExtractContents(): boolean;
   canReplaceWith(replacement: LexicalNode): boolean;
   canInsertAfter(node: LexicalNode): boolean;
+  extractWithChild(
+    child: LexicalNode,
+    selection: RangeSelection | NodeSelection | GridSelection,
+    destination: 'clone' | 'html',
+  ): boolean;
   canBeEmpty(): boolean;
   canInsertTextBefore(): boolean;
   canInsertTextAfter(): boolean;

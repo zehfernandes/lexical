@@ -6,6 +6,4 @@
  *
  */
 
-'use strict';
-
-module.exports = require('./dist/LexicalCode.js');
+module.exports = require('./dist/LexicalClipboard.js');

@@ -304,7 +304,7 @@ const packages = [
     modules: [
       {
         outputFileName: 'Lexical',
-        sourceFileName: 'index.js',
+        sourceFileName: 'index.ts',
       },
     ],
     name: 'Lexical Core',
@@ -348,7 +348,7 @@ const packages = [
     modules: [
       {
         outputFileName: 'LexicalClipboard',
-        sourceFileName: 'index.js',
+        sourceFileName: 'index.ts',
       },
     ],
     name: 'Lexical File',
@@ -425,7 +425,7 @@ const packages = [
     modules: [
       {
         outputFileName: 'LexicalCode',
-        sourceFileName: 'index.js',
+        sourceFileName: 'index.ts',
       },
     ],
     name: 'Lexical Code',
@@ -436,7 +436,7 @@ const packages = [
     modules: [
       {
         outputFileName: 'LexicalDragon',
-        sourceFileName: 'index.js',
+        sourceFileName: 'index.ts',
       },
     ],
     name: 'Lexical Dragon',
