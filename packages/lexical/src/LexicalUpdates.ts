@@ -259,8 +259,7 @@ export function parseEditorState(
   activeEditor = editor;
   try {
     const parsedNodeMap = new Map(parsedEditorState._nodeMap);
-    // $FlowFixMe: root always exists in Map
-    const parsedRoot = ((parsedNodeMap.get('root'): any): ParsedNode);
+    const parsedRoot = parsedNodeMap.get('root') as ParsedNode;
     internalCreateNodeFromParse(
       parsedRoot,
       parsedNodeMap,
@@ -307,15 +306,15 @@ function handleDEVOnlyPendingUpdateGuarantees(
   // Given we can't Object.freeze the nodeMap as it's a Map,
   // we instead replace its set, clear and delete methods.
   const nodeMap = pendingEditorState._nodeMap;
-  // $FlowFixMe: this is allowed
+  // @ts-ignore: this is allowed
   nodeMap.set = () => {
     throw new Error('Cannot call set() on a frozen Lexical node map');
   };
-  // $FlowFixMe: this is allowed
+  // @ts-ignore: this is allowed
   nodeMap.clear = () => {
     throw new Error('Cannot call clear() on a frozen Lexical node map');
   };
-  // $FlowFixMe: this is allowed
+  // @ts-ignore: this is allowed
   nodeMap.delete = () => {
     throw new Error('Cannot call delete() on a frozen Lexical node map');
   };
@@ -453,7 +452,7 @@ export function triggerListeners(
   type: 'update' | 'root' | 'decorator' | 'textcontent' | 'readonly',
   editor: LexicalEditor,
   isCurrentlyEnqueuingUpdates: boolean,
-  // $FlowFixMe: needs refining
+  // @ts-ignore: needs refining
   ...payload: Array<any>
 ): void {
   const previouslyUpdating = editor._updating;
@@ -490,7 +489,7 @@ export function triggerCommandListeners<P>(
         const listeners = listenerInPriorityOrder[i];
         if (listeners !== undefined) {
           for (const listener of listeners) {
-            // $FlowFixMe[missing-type-arg]
+            // @ts-ignore[missing-type-arg]
             if (listener(payload, editor) === true) {
               return true;
             }

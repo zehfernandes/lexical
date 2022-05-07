@@ -100,7 +100,7 @@ import {
 
 type RootElementRemoveHandles = Array<() => void>;
 type RootElementEvents = Array<
-  [string, {} | ((event: Event, editor: LexicalEditor) => void)],
+  [string, {} | ((event: Event, editor: LexicalEditor) => void)]
 >;
 
 const PASS_THROUGH_COMMAND = Object.freeze({});
@@ -689,11 +689,11 @@ function onKeyDown(event: KeyboardEvent, editor: LexicalEditor): void {
 function getRootElementRemoveHandles(
   rootElement: HTMLElement,
 ): RootElementRemoveHandles {
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   let eventHandles = rootElement.__lexicalEventHandles;
   if (eventHandles === undefined) {
     eventHandles = [];
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     rootElement.__lexicalEventHandles = eventHandles;
   }
   return eventHandles;
@@ -744,7 +744,7 @@ export function addRootElementEvents(
     doc.addEventListener('selectionchange', onDocumentSelectionChange);
   }
   rootElementsRegistered++;
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   rootElement.__lexicalEditor = editor;
   const removeHandles = getRootElementRemoveHandles(rootElement);
 
@@ -796,18 +796,18 @@ export function removeRootElementEvents(rootElement: HTMLElement): void {
       doc.removeEventListener('selectionchange', onDocumentSelectionChange);
     }
   }
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   const editor: LexicalEditor | null | void = rootElement.__lexicalEditor;
   if (editor != null) {
     cleanActiveNestedEditorsMap(editor);
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     rootElement.__lexicalEditor = null;
   }
   const removeHandles = getRootElementRemoveHandles(rootElement);
   for (let i = 0; i < removeHandles.length; i++) {
     removeHandles[i]();
   }
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   rootElement.__lexicalEventHandles = [];
 }
 

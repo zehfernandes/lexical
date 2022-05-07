@@ -11,8 +11,8 @@ import type {LexicalNode} from '../LexicalNode';
 
 import {ElementNode} from './LexicalElementNode';
 
-export class GridNode extends ElementNode {}
+export class GridRowNode extends ElementNode {}
 
-export function $isGridNode(node: ?LexicalNode): boolean %checks {
-  return node instanceof GridNode;
+export function $isGridRowNode(node: LexicalNode | null): node is GridRowNode {
+  return node instanceof GridRowNode;
 }

@@ -61,9 +61,9 @@ function isManagedLineBreak(
   editor: LexicalEditor,
 ): boolean {
   return (
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     target.__lexicalLineBreak === dom ||
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     dom['__lexicalKey_' + editor._key] !== undefined
   );
 }
@@ -132,12 +132,7 @@ export function $flushMutations(
             $isTextNode(targetNode) &&
             targetNode.isAttached()
           ) {
-            handleTextMutation(
-              // $FlowFixMe: nodeType === DOM_TEXT_TYPE is a Text DOM node
-              ((targetDOM: any): Text),
-              targetNode,
-              editor,
-            );
+            handleTextMutation(targetDOM as Text, targetNode, editor);
           }
         } else if (type === 'childList') {
           shouldRevertSelection = true;

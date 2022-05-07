@@ -6,13 +6,11 @@
  *
  */
 
-import {Class, $ReadOnly} from 'utility-types';
-
 /**
  * LexicalCommands
  */
 
-export type LexicalCommand<P> = $ReadOnly<{}>;
+export type LexicalCommand<P> = Readonly<{}>;
 
 export var SELECTION_CHANGE_COMMAND: LexicalCommand<void>;
 export var CLICK_COMMAND: LexicalCommand<MouseEvent>;
@@ -63,7 +61,7 @@ export declare function createCommand<T>(): LexicalCommand<T>;
  * LexicalEditor
  */
 type ErrorHandler = (error: Error) => void;
-type MutationListeners = Map<MutationListener, Class<LexicalNode>>;
+type MutationListeners = Map<MutationListener, LexicalNode>;
 export type NodeMutation = 'created' | 'updated' | 'destroyed';
 type UpdateListener = (arg0: {
   tags: Set<string>;
@@ -93,7 +91,7 @@ type CommandListener<P> = (payload: P, editor: LexicalEditor) => boolean;
 type Commands = Map<LexicalCommand<any>, Array<Set<CommandListener<any>>>>;
 type RegisteredNodes = Map<string, RegisteredNode>;
 type RegisteredNode = {
-  klass: Class<LexicalNode>;
+  klass: LexicalNode;
   transforms: Set<Transform<LexicalNode>>;
 };
 type Transform<T> = (node: T) => void;
@@ -140,15 +138,15 @@ export declare class LexicalEditor {
   ): () => void;
   registerReadOnlyListener(listener: ReadOnlyListener): () => void;
   registerMutationListener(
-    klass: Class<LexicalNode>,
+    klass: LexicalNode,
     listener: MutationListener,
   ): () => void;
   registerNodeTransform<T extends LexicalNode>(
-    klass: Class<T>,
+    klass: T,
     listener: Transform<T>,
   ): () => void;
   dispatchCommand<P>(type: string, payload: P): boolean;
-  hasNodes(nodes: Array<Class<LexicalNode>>): boolean;
+  hasNodes(nodes: Array<LexicalNode>): boolean;
   getDecorators<X>(): Record<NodeKey, X>;
   getRootElement(): null | HTMLElement;
   setRootElement(rootElement: null | HTMLElement): void;
@@ -185,7 +183,7 @@ type TextNodeThemeClasses = {
   superscript?: EditorThemeClassName;
 };
 export type EditorThemeClasses = {
-  ltr?: EditorThemeClassName;
+  ltr: EditorThemeClassName;
   rtl?: EditorThemeClassName;
   text?: TextNodeThemeClasses;
   paragraph?: EditorThemeClassName;
@@ -248,7 +246,7 @@ export function createEditor(editorConfig?: {
   editorState?: EditorState;
   theme?: EditorThemeClasses;
   parentEditor?: LexicalEditor;
-  nodes?: Array<Class<LexicalNode>>;
+  nodes?: Array<LexicalNode>;
   onError: (error: Error) => void;
   disableEvents?: boolean;
   readOnly?: boolean;
@@ -780,7 +778,7 @@ export function $setCompositionKey(compositionKey: null | NodeKey): void;
 export function $setSelection(
   selection: null | RangeSelection | NodeSelection | GridSelection,
 ): void;
-export function $nodesOfType<T extends LexicalNode>(klass: Class<T>): Array<T>;
+export function $nodesOfType<T extends LexicalNode>(klass: T): Array<T>;
 export function $getDecoratorNode(
   focus: Point,
   isBackward: boolean,

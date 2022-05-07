@@ -54,10 +54,12 @@ const LTR =
   '\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF\u200E\u2C00-\uFB1C' +
   '\uFE00-\uFE6F\uFEFD-\uFFFF';
 
+// eslint-disable-next-line no-misleading-character-class,@typescript-eslint/no-inferrable-types
 export const RTL_REGEX: RegExp = new RegExp('^[^' + LTR + ']*[' + RTL + ']');
+// eslint-disable-next-line no-misleading-character-class,@typescript-eslint/no-inferrable-types
 export const LTR_REGEX: RegExp = new RegExp('^[^' + RTL + ']*[' + LTR + ']');
 
-export const TEXT_TYPE_TO_FORMAT: {[TextFormatType]: number} = {
+export const TEXT_TYPE_TO_FORMAT: Record<TextFormatType, number> = {
   bold: IS_BOLD,
   code: IS_CODE,
   italic: IS_ITALIC,
@@ -67,14 +69,14 @@ export const TEXT_TYPE_TO_FORMAT: {[TextFormatType]: number} = {
   underline: IS_UNDERLINE,
 };
 
-export const ELEMENT_TYPE_TO_FORMAT: {[ElementFormatType]: number} = {
+export const ELEMENT_TYPE_TO_FORMAT: Record<ElementFormatType, number> = {
   center: IS_ALIGN_CENTER,
   justify: IS_ALIGN_JUSTIFY,
   left: IS_ALIGN_LEFT,
   right: IS_ALIGN_RIGHT,
 };
 
-export const TEXT_MODE_TO_TYPE: {[TextModeType]: 0 | 1 | 2 | 3} = {
+export const TEXT_MODE_TO_TYPE: Record<TextModeType, 0 | 1 | 2 | 3> = {
   inert: IS_INERT,
   normal: IS_NORMAL,
   segmented: IS_SEGMENTED,

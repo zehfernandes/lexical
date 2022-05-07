@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
 import type {
   EditorState,
   GridSelection,
@@ -30,19 +29,16 @@ import {
   REDO_COMMAND,
   UNDO_COMMAND,
 } from 'lexical';
-
 type MergeAction = 0 | 1 | 2;
 const HISTORY_MERGE = 0;
 const HISTORY_PUSH = 1;
 const DISCARD_HISTORY_CANDIDATE = 2;
-
 type ChangeType = 0 | 1 | 2 | 3 | 4;
 const OTHER = 0;
 const COMPOSING_CHARACTER = 1;
 const INSERT_CHARACTER_AFTER_SELECTION = 2;
 const DELETE_CHARACTER_BEFORE_SELECTION = 3;
 const DELETE_CHARACTER_AFTER_SELECTION = 4;
-
 export type HistoryStateEntry = {
   editor: LexicalEditor;
   editorState: EditorState;
@@ -204,7 +200,6 @@ function createMergeActionGetter(
 ) => MergeAction {
   let prevChangeTime = Date.now();
   let prevChangeType = OTHER;
-
   return (
     prevEditorState,
     nextEditorState,
@@ -274,7 +269,6 @@ function createMergeActionGetter(
 
     prevChangeTime = changeTime;
     prevChangeType = changeType;
-
     return mergeAction;
   };
 }
@@ -440,15 +434,12 @@ export function registerHistory(
     ),
     editor.registerUpdateListener(applyChange),
   );
-
   const unregisterUpdateListener = editor.registerUpdateListener(applyChange);
-
   return () => {
     unregisterCommandListener();
     unregisterUpdateListener();
   };
 }
-
 export function createEmptyHistoryState(): HistoryState {
   return {
     current: null,

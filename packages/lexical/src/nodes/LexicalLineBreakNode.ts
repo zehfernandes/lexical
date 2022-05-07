@@ -24,7 +24,7 @@ export class LineBreakNode extends LexicalNode {
     return new LineBreakNode(node.__key);
   }
 
-  constructor(key?: NodeKey): void {
+  constructor(key?: NodeKey) {
     super(key);
   }
 
@@ -58,6 +58,8 @@ export function $createLineBreakNode(): LineBreakNode {
   return new LineBreakNode();
 }
 
-export function $isLineBreakNode(node: ?LexicalNode): boolean %checks {
+export function $isLineBreakNode(
+  node: LexicalNode | null,
+): node is LineBreakNode {
   return node instanceof LineBreakNode;
 }

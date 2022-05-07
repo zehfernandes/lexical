@@ -18,7 +18,7 @@ import babel from '@rollup/plugin-babel';
 const moduleResolution = [
   {
     find: /lexical$/,
-    replacement: path.resolve('../lexical/src/index.js'),
+    replacement: path.resolve('../lexical/src/index.ts'),
   },
   {
     find: '@lexical/clipboard',
@@ -38,7 +38,7 @@ const moduleResolution = [
   },
   {
     find: '@lexical/history',
-    replacement: path.resolve('../lexical-history/src/index.js'),
+    replacement: path.resolve('../lexical-history/src/index.ts'),
   },
   {
     find: '@lexical/list',
