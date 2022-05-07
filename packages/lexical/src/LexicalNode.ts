@@ -109,21 +109,20 @@ export function removeNode(
   }
 }
 
-export function $getNodeByKeyOrThrow<N: LexicalNode>(key: NodeKey): N {
+export function $getNodeByKeyOrThrow<N = LexicalNode>(key: NodeKey): N {
   const node = $getNodeByKey<N>(key);
   if (node === null) {
     invariant(
       false,
       "Expected node with key %s to exist but it's not in the nodeMap.",
-      key,
     );
   }
   return node;
 }
 
 export type DOMConversion = {
-  conversion: DOMConversionFn,
-  priority: 0 | 1 | 2 | 3 | 4,
+  conversion: DOMConversionFn;
+  priority: 0 | 1 | 2 | 3 | 4;
 };
 export type DOMConversionFn = (
   element: Node,
@@ -132,18 +131,22 @@ export type DOMConversionFn = (
 export type DOMChildConversion = (
   lexicalNode: LexicalNode,
 ) => LexicalNode | null | void;
-export type DOMConversionMap = {
-  [NodeName]: (node: Node) => DOMConversion | null,
-};
 type NodeName = string;
+export type DOMConversionMap = Record<
+  NodeName,
+  (node: Node) => DOMConversion | null
+>;
+
 export type DOMConversionOutput = {
-  after?: (childLexicalNodes: Array<LexicalNode>) => Array<LexicalNode>,
-  forChild?: DOMChildConversion,
-  node: LexicalNode | null,
+  after?: (childLexicalNodes: Array<LexicalNode>) => Array<LexicalNode>;
+  forChild?: DOMChildConversion;
+  node: LexicalNode | null;
 };
 export type DOMExportOutput = {
-  after?: (generatedElement: ?HTMLElement) => ?HTMLElement,
-  element?: HTMLElement | null,
+  after?: (
+    generatedElement: HTMLElement | null | undefined,
+  ) => HTMLElement | null | undefined;
+  element?: HTMLElement | null;
 };
 export type NodeKey = string;
 
@@ -158,21 +161,13 @@ export class LexicalNode {
   // on any  Node, and we throw this error by default since the subclass should provide
   // their own implementation.
   static getType(): string {
-    invariant(
-      false,
-      'LexicalNode: Node %s does not implement .getType().',
-      this.name,
-    );
+    invariant(false, 'LexicalNode: Node %s does not implement .getType().');
   }
-  static clone(data: $FlowFixMe): LexicalNode {
-    invariant(
-      false,
-      'LexicalNode: Node %s does not implement .clone().',
-      this.name,
-    );
+  static clone(data: unknown): LexicalNode {
+    invariant(false, 'LexicalNode: Node %s does not implement .clone().');
   }
 
-  constructor(key?: NodeKey): void {
+  constructor(key?: NodeKey) {
     this.__type = this.constructor.getType();
     this.__parent = null;
     $setNodeKey(this, key);
@@ -285,11 +280,7 @@ export class LexicalNode {
   getTopLevelElementOrThrow(): ElementNode {
     const parent = this.getTopLevelElement();
     if (parent === null) {
-      invariant(
-        false,
-        'Expected node %s to have a top parent element.',
-        this.__key,
-      );
+      invariant(false, 'Expected node %s to have a top parent element.');
     }
     return parent;
   }
@@ -389,7 +380,7 @@ export class LexicalNode {
     return null;
   }
 
-  is(object: ?LexicalNode): boolean {
+  is(object: LexicalNode | null): boolean {
     if (object == null) {
       return false;
     }
@@ -526,7 +517,6 @@ export class LexicalNode {
     }
     return latest;
   }
-  // $FlowFixMe this is LexicalNode
   getWritable(): this {
     errorOnReadOnly();
     const editorState = getActiveEditorState();
@@ -565,7 +555,7 @@ export class LexicalNode {
     internalMarkNodeAsDirty(mutableNode);
     // Update reference in node map
     nodeMap.set(key, mutableNode);
-    // $FlowFixMe this is LexicalNode
+    // @ts-ignore this is LexicalNode
     return mutableNode;
   }
 
@@ -587,7 +577,7 @@ export class LexicalNode {
   }
 
   updateDOM(
-    // $FlowFixMe: TODO
+    // @ts-ignore: TODO
     prevNode: any,
     dom: HTMLElement,
     config: EditorConfig,
@@ -766,17 +756,13 @@ export class LexicalNode {
   }
 }
 
-function errorOnTypeKlassMismatch(
-  type: string,
-  klass: Class<LexicalNode>,
-): void {
+function errorOnTypeKlassMismatch(type: string, klass: LexicalNode): void {
   const registeredNode = getActiveEditor()._nodes.get(type);
   // Common error - split in its own invariant
   if (registeredNode === undefined) {
     invariant(
       false,
       'Create node: Attempted to create node %s that was not previously registered on the editor. You can use register your custom nodes.',
-      klass.name,
     );
   }
   const editorKlass = registeredNode.klass;
@@ -784,9 +770,6 @@ function errorOnTypeKlassMismatch(
     invariant(
       false,
       'Create node: Type %s in node %s does not match registered node %s with the same type',
-      type,
-      klass.name,
-      editorKlass.name,
     );
   }
 }

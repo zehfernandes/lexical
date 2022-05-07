@@ -115,6 +115,8 @@ export function $createParagraphNode(): ParagraphNode {
   return new ParagraphNode();
 }
 
-export function $isParagraphNode(node: ?LexicalNode): boolean %checks {
-  return node instanceof ParagraphNode;
+export function $isParagraphNode(
+  node: LexicalNode | null,
+): node is ParagraphNode {
+  return (node as ParagraphNode) instanceof ParagraphNode;
 }

@@ -66,7 +66,7 @@ export type TextFormatType =
 
 export type TextModeType = 'normal' | 'token' | 'segmented' | 'inert';
 
-export type TextMark = {end: null | number, id: string, start: null | number};
+export type TextMark = {end: null | number; id: string; start: null | number};
 
 export type TextMarks = Array<TextMark>;
 
@@ -136,7 +136,7 @@ function setTextThemeClassNames(
   }
 
   for (const key in TEXT_TYPE_TO_FORMAT) {
-    // $FlowFixMe: expected cast here
+    // @ts-ignore: expected cast here
     const format: TextFormatType = key;
     const flag = TEXT_TYPE_TO_FORMAT[format];
     classNames = getCachedClassNameArray<TextNodeThemeClasses>(
@@ -193,7 +193,7 @@ function setTextContent(
   dom: HTMLElement,
   node: TextNode,
 ): void {
-  // $FlowFixMe: first node is always text
+  // @ts-ignore: first node is always text
   const firstChild: ?Text = dom.firstChild;
   const isComposing = node.isComposing();
   // Always add a suffix if we're composing a node
@@ -246,11 +246,11 @@ export class TextNode extends LexicalNode {
     return 'text';
   }
 
-  static clone(node: $FlowFixMe): TextNode {
+  static clone(node: TextNode): TextNode {
     return new TextNode(node.__text, node.__key);
   }
 
-  constructor(text: string, key?: NodeKey): void {
+  constructor(text: string, key?: NodeKey) {
     super(key);
     this.__text = text;
     this.__format = 0;
@@ -365,7 +365,7 @@ export class TextNode extends LexicalNode {
       return true;
     }
     if (prevOuterTag === nextOuterTag && prevInnerTag !== nextInnerTag) {
-      // $FlowFixMe: should always be an element
+      // @ts-ignore: should always be an element
       const prevInnerDOM: HTMLElement = dom.firstChild;
       if (prevInnerDOM == null) {
         invariant(false, 'updateDOM: prevInnerDOM is null or undefined');
@@ -385,7 +385,7 @@ export class TextNode extends LexicalNode {
     let innerDOM: HTMLElement = dom;
     if (nextOuterTag !== null) {
       if (prevOuterTag !== null) {
-        // $FlowFixMe: should always be an element
+        // @ts-ignore: should always be an element
         innerDOM = dom.firstChild;
         if (innerDOM == null) {
           invariant(false, 'updateDOM: innerDOM is null or undefined');
@@ -765,7 +765,7 @@ export class TextNode extends LexicalNode {
 }
 
 function convertSpanElement(domNode: Node): DOMConversionOutput {
-  // $FlowFixMe[incompatible-type] domNode is a <span> since we matched it by nodeName
+  // @ts-ignore[incompatible-type] domNode is a <span> since we matched it by nodeName
   const span: HTMLSpanElement = domNode;
   // Google Docs uses span tags + font-weight for bold text
   const hasBoldFontWeight = span.style.fontWeight === '700';
@@ -781,7 +781,7 @@ function convertSpanElement(domNode: Node): DOMConversionOutput {
   };
 }
 function convertBringAttentionToElement(domNode: Node): DOMConversionOutput {
-  // $FlowFixMe[incompatible-type] domNode is a <b> since we matched it by nodeName
+  // @ts-ignore[incompatible-type] domNode is a <b> since we matched it by nodeName
   const b: HTMLElement = domNode;
   // Google Docs wraps all copied HTML in a <b> with font-weight normal
   const hasNormalFontWeight = b.style.fontWeight === 'normal';
@@ -799,7 +799,7 @@ function convertBringAttentionToElement(domNode: Node): DOMConversionOutput {
 function convertTextDOMNode(domNode: Node): DOMConversionOutput {
   return {node: $createTextNode(domNode.textContent)};
 }
-const nodeNameToTextFormat: {[string]: TextFormatType} = {
+const nodeNameToTextFormat: {[key: string]: TextFormatType} = {
   em: 'italic',
   i: 'italic',
   strong: 'bold',
@@ -822,10 +822,12 @@ function convertTextFormatElement(domNode: Node): DOMConversionOutput {
   };
 }
 
-export function $createTextNode(text?: string = ''): TextNode {
+export function $createTextNode(text = ''): TextNode {
   return new TextNode(text);
 }
 
-export function $isTextNode(node: ?LexicalNode): boolean %checks {
-  return node instanceof TextNode;
+export function $isTextNode(
+  node: TextNode | LexicalNode | null,
+): node is TextNode {
+  return (node as TextNode) instanceof TextNode;
 }

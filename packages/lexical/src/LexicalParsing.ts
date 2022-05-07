@@ -21,67 +21,63 @@ import {
 } from './LexicalUpdates';
 
 export type NodeParserState = {
-  originalSelection: null | ParsedSelection,
-  remappedSelection?: ParsedSelection,
+  originalSelection: null | ParsedSelection;
+  remappedSelection?: ParsedSelection;
 };
 
 export type ParsedNode = {
-  __key: NodeKey,
-  __parent: null | NodeKey,
-  __type: string,
-  ...
+  __key: NodeKey;
+  __parent: null | NodeKey;
+  __type: string;
 };
 
 export type ParsedElementNode = {
-  ...ParsedNode,
-  __children: Array<NodeKey>,
-  __dir: 'ltr' | 'rtl' | null,
-  __format: number,
-  __indent: number,
-  ...
-};
+  __children: Array<NodeKey>;
+  __dir: 'ltr' | 'rtl' | null;
+  __format: number;
+  __indent: number;
+} & ParsedNode;
 
 export type ParsedTextNode = {
-  ...ParsedNode,
-  __format: number,
-  __mode: number,
-  __text: string,
-};
+  __format: number;
+  __mode: number;
+  __text: string;
+} & ParsedNode;
 
 export type ParsedNodeMap = Map<NodeKey, ParsedNode>;
 
 export type ParsedRangeSelection = {
   anchor: {
-    key: string,
-    offset: number,
-    type: 'text' | 'element',
-  },
+    key: string;
+    offset: number;
+    type: 'text' | 'element';
+  };
   focus: {
-    key: string,
-    offset: number,
-    type: 'text' | 'element',
-  },
-  type: 'range',
+    key: string;
+    offset: number;
+    type: 'text' | 'element';
+  };
+  type: 'range';
 };
 
 export type ParsedNodeSelection = {
-  nodes: Array<NodeKey>,
-  type: 'node',
+  nodes: Array<NodeKey>;
+  type: 'node';
 };
 
 export type ParsedGridSelection = {
   anchor: {
-    key: string,
-    offset: number,
-    type: 'text' | 'element',
-  },
+    key: string;
+    offset: number;
+    type: 'text' | 'element';
+  };
   focus: {
-    key: string,
-    offset: number,
-    type: 'text' | 'element',
-  },
-  gridKey: NodeKey,
-  type: 'grid',
+    key: string;
+    offset: number;
+    type: 'text' | 'element';
+  };
+  gridKey: NodeKey;
+  type: 'grid';
 };
 
 export type ParsedSelection =
@@ -99,7 +95,7 @@ export function $createNodeFromParse(
 }
 
 export function internalCreateNodeFromParse(
-  parsedNode: $FlowFixMe,
+  parsedNode: any,
   parsedNodeMap: ParsedNodeMap,
   editor: LexicalEditor,
   parentKey: null | NodeKey,
@@ -108,7 +104,7 @@ export function internalCreateNodeFromParse(
   const nodeType = parsedNode.__type;
   const registeredNode = editor._nodes.get(nodeType);
   if (registeredNode === undefined) {
-    invariant(false, 'createNodeFromParse: type "%s" + not found', nodeType);
+    invariant(false, 'createNodeFromParse: type "%s" + not found');
   }
   // Check for properties that are editors
   for (const property in parsedNode) {

@@ -9,7 +9,7 @@ DIRECTORIES=(
     # "lexical-clipboard" 
     # "lexical-hashtag" 
     # "lexical-headless"
-    "lexical-history" 
+    # "lexical-history" 
     # "lexical-selection" 
     # "lexical-offset" 
     # "lexical-code" 
@@ -23,7 +23,7 @@ DIRECTORIES=(
     # "lexical-link" 
     # "lexical-text" 
     # "lexical-markdown"
-    # "shared"
+    "shared"
 )
 
 for directory in ${DIRECTORIES[@]}; do
@@ -34,15 +34,17 @@ for directory in ${DIRECTORIES[@]}; do
         do git mv "$i" "$(echo $i | rev | cut -d '.' -f 2- | rev).tsx";
     done
 
-    npx @khanacademy/flow-to-ts --write "./packages/lexical-history/**/{!*.d.ts,*.ts}";
-    npx @khanacademy/flow-to-ts --write "./packages/lexical-history/**/*.tsx";
+    # npm run prettier:fix;
 
-    # for i in $(find ./packages/$directory -iname "*.ts" -not -path "*__tests__*" -not -path "*dist*" -not -path "flow");
-    #     do sed -i "" "s/boolean %checks/node is LexicalNode/g" $i && sed -i "" "s/: LexicalNode>/ = LexicalNode>/g" $i;
-    # done
-    # for i in $(find ./packages/$directory -iname "*.tsx" -not -path "*__tests__*" -not -path "*dist*" -not -path "flow");
-    #     do sed -i "" "s/boolean %checks/node is LexicalNode/g" $i && sed -i "" "s/: LexicalNode>/ = LexicalNode>/g" $i;
-    # done
+    # npx @khanacademy/flow-to-ts --write "./packages/lexical-history/**/{!*.d.ts,*.ts}";
+    # npx @khanacademy/flow-to-ts --write "./packages/lexical-history/**/*.tsx";
+
+    for i in $(find ./packages/$directory -iname "*.ts" -not -path "*__tests__*" -not -path "*dist*" -not -path "flow");
+        do sed -i "" "s/: LexicalNode>/ = LexicalNode>/g" $i;
+    done
+    for i in $(find ./packages/$directory -iname "*.tsx" -not -path "*__tests__*" -not -path "*dist*" -not -path "flow");
+        do sed -i "" "s/: LexicalNode>/ = LexicalNode>/g" $i;
+    done
 done
 
-# npm run prettier:fix;
+npm run prettier:fix;

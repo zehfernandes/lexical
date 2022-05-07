@@ -61,6 +61,7 @@ import {
   triggerCommandListeners,
   updateEditor,
 } from './LexicalUpdates';
+import {Class} from 'utility-types';
 
 export const emptyFunction = () => {};
 
@@ -130,7 +131,7 @@ export function getNearestEditorFromDOMNode(
 ): LexicalEditor | null {
   let currentNode = node;
   while (currentNode != null) {
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     const editor: LexicalEditor = currentNode.__lexicalEditor;
     if (editor != null && !editor.isReadOnly()) {
       return editor;
@@ -163,7 +164,7 @@ export function getDOMTextNode(element: Node | null): Text | null {
   let node = element;
   while (node != null) {
     if (node.nodeType === DOM_TEXT_TYPE) {
-      // $FlowFixMe: this is a Text
+      // @ts-ignore: this is a Text
       return node;
     }
     node = node.firstChild;
@@ -193,7 +194,7 @@ export function toggleTextFormatType(
   return format;
 }
 
-export function $isLeafNode(node: ?LexicalNode): boolean %checks {
+export function $isLeafNode(node: LexicalNode | null): node is LexicalNode {
   return $isTextNode(node) || $isLineBreakNode(node) || $isDecoratorNode(node);
 }
 
@@ -312,7 +313,7 @@ export function $getCompositionKey(): null | NodeKey {
   return editor._compositionKey;
 }
 
-export function $getNodeByKey<N: LexicalNode>(
+export function $getNodeByKey<N = LexicalNode>(
   key: NodeKey,
   _editorState?: EditorState,
 ): N | null {
@@ -321,7 +322,8 @@ export function $getNodeByKey<N: LexicalNode>(
   if (node === undefined) {
     return null;
   }
-  return (node: $FlowFixMe);
+  // @ts-ignore
+  return node;
 }
 
 export function getNodeFromDOMNode(
@@ -329,7 +331,7 @@ export function getNodeFromDOMNode(
   editorState?: EditorState,
 ): LexicalNode | null {
   const editor = getActiveEditor();
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   const key: NodeKey | undefined = dom['__lexicalKey_' + editor._key];
   if (key !== undefined) {
     return $getNodeByKey(key, editorState);
@@ -394,10 +396,7 @@ export function $getRoot(): RootNode {
 }
 
 export function internalGetRoot(editorState: EditorState): RootNode {
-  return ((editorState._nodeMap.get(
-    'root',
-    // $FlowFixMe: root is always in our Map
-  ): any): RootNode);
+  return editorState._nodeMap.get('root') as RootNode;
 }
 
 export function $setSelection(
@@ -451,7 +450,7 @@ function getNodeKeyFromDOM(
   let node = dom;
   while (node != null) {
     const key: NodeKey | void =
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       node['__lexicalKey_' + editor._key];
     if (key !== undefined) {
       return key;
@@ -885,7 +884,7 @@ export function isDelete(keyCode: number): boolean {
   return keyCode === 46;
 }
 
-export function getCachedClassNameArray<Theme: {...}>(
+export function getCachedClassNameArray<Theme>(
   classNamesTheme: Theme,
   classNameThemeType: string,
 ): Array<string> | void {
@@ -930,7 +929,7 @@ export function setMutatedNode(
   }
 }
 
-export function $nodesOfType<T: LexicalNode>(klass: Class<T>): Array<T> {
+export function $nodesOfType<T = LexicalNode>(klass: T): Array<T> {
   const editorState = getActiveEditorState();
   const readOnly = editorState._readOnly;
   const klassType = klass.getType();

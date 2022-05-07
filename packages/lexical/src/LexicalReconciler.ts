@@ -213,7 +213,7 @@ function createNode(
     if (insertDOM != null) {
       parentDOM.insertBefore(dom, insertDOM);
     } else {
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       const possibleLineBreak = parentDOM.__lexicalLineBreak;
       if (possibleLineBreak != null) {
         parentDOM.insertBefore(dom, possibleLineBreak);
@@ -262,7 +262,7 @@ function createChildren(
   for (; startIndex <= endIndex; ++startIndex) {
     createNode(children[startIndex], dom, insertDOM);
   }
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   dom.__lexicalTextContent = subTreeTextContent;
   subTreeTextContent = previousSubTreeTextContent + subTreeTextContent;
 }
@@ -293,17 +293,17 @@ function reconcileElementTerminatingLineBreak(
 
   if (prevLineBreak) {
     if (!nextLineBreak) {
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       const element = dom.__lexicalLineBreak;
       if (element != null) {
         dom.removeChild(element);
       }
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       dom.__lexicalLineBreak = null;
     }
   } else if (nextLineBreak) {
     const element = document.createElement('br');
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     dom.__lexicalLineBreak = element;
     dom.appendChild(element);
   }
@@ -311,9 +311,9 @@ function reconcileElementTerminatingLineBreak(
 
 function reconcileBlockDirection(element: ElementNode, dom: HTMLElement): void {
   const previousSubTreeDirectionTextContent: string =
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     dom.__lexicalDirTextContent;
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   const previousDirection: string = dom.__lexicalDir;
 
   if (
@@ -338,10 +338,10 @@ function reconcileBlockDirection(element: ElementNode, dom: HTMLElement): void {
       if (previousDirectionTheme !== undefined) {
         if (typeof previousDirectionTheme === 'string') {
           const classNamesArr = previousDirectionTheme.split(' ');
-          // $FlowFixMe: intentional
+          // @ts-ignore: intentional
           previousDirectionTheme = theme[previousDirection] = classNamesArr;
         }
-        // $FlowFixMe: intentional
+        // @ts-ignore: intentional
         classList.remove(...previousDirectionTheme);
       }
       if (
@@ -355,7 +355,7 @@ function reconcileBlockDirection(element: ElementNode, dom: HTMLElement): void {
         if (nextDirectionTheme !== undefined) {
           if (typeof nextDirectionTheme === 'string') {
             const classNamesArr = nextDirectionTheme.split(' ');
-            // $FlowFixMe: intentional
+            // @ts-ignore: intentional
             nextDirectionTheme = theme[direction] = classNamesArr;
           }
           classList.add(...nextDirectionTheme);
@@ -369,9 +369,9 @@ function reconcileBlockDirection(element: ElementNode, dom: HTMLElement): void {
       }
     }
     activeTextDirection = direction;
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     dom.__lexicalDirTextContent = subTreeDirectionedTextContent;
-    // $FlowFixMe: internal field
+    // @ts-ignore: internal field
     dom.__lexicalDir = direction;
   }
 }
@@ -416,7 +416,7 @@ function reconcileChildren(
     }
   } else if (nextChildrenLength === 0) {
     if (prevChildrenLength !== 0) {
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       const lexicalLineBreak = dom.__lexicalLineBreak;
       const canUseFastPath = lexicalLineBreak == null;
       destroyChildren(
@@ -443,7 +443,7 @@ function reconcileChildren(
   if ($textContentRequiresDoubleLinebreakAtEnd(element)) {
     subTreeTextContent += DOUBLE_LINE_BREAK;
   }
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   dom.__lexicalTextContent = subTreeTextContent;
   subTreeTextContent = previousSubTreeTextContent + subTreeTextContent;
 }
@@ -468,13 +468,13 @@ function reconcileNode(
 
   if (prevNode === nextNode && !isDirty) {
     if ($isElementNode(prevNode)) {
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       const previousSubTreeTextContent = dom.__lexicalTextContent;
       if (previousSubTreeTextContent !== undefined) {
         subTreeTextContent += previousSubTreeTextContent;
         editorTextContent += previousSubTreeTextContent;
       }
-      // $FlowFixMe: internal field
+      // @ts-ignore: internal field
       const previousSubTreeDirectionTextContent = dom.__lexicalDirTextContent;
       if (previousSubTreeDirectionTextContent !== undefined) {
         subTreeDirectionedTextContent += previousSubTreeDirectionTextContent;
@@ -580,12 +580,12 @@ function reconcileDecorator(key: NodeKey, decorator: mixed): void {
 }
 
 function getFirstChild(element: HTMLElement): Node | null {
-  // $FlowFixMe: firstChild is always null or a Node
+  // @ts-ignore: firstChild is always null or a Node
   return element.firstChild;
 }
 
 function getNextSibling(element: HTMLElement): Node | null {
-  // $FlowFixMe: nextSibling is always null or a Node
+  // @ts-ignore: nextSibling is always null or a Node
   return element.nextSibling;
 }
 
@@ -698,23 +698,23 @@ function reconcileRoot(
   // so instead we make it seem that these values are always set.
   // We also want to make sure we clear them down, otherwise we
   // can leak memory.
-  // $FlowFixMe
+  // @ts-ignore
   activeEditor = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activeEditorNodes = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activeDirtyElements = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activeDirtyLeaves = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activePrevNodeMap = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activeNextNodeMap = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activeEditorConfig = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   activePrevKeyToDOMMap = undefined;
-  // $FlowFixMe
+  // @ts-ignore
   mutatedNodes = undefined;
 
   return currentMutatedNodes;
@@ -778,7 +778,7 @@ function scrollIntoViewIfNeeded(
   rootElement: ?HTMLElement,
 ): void {
   const element: Element =
-    // $FlowFixMe: this is valid, as we are checking the nodeType
+    // @ts-ignore: this is valid, as we are checking the nodeType
     node.nodeType === DOM_TEXT_TYPE ? node.parentNode : node;
   if (element !== null) {
     const rect = element.getBoundingClientRect();
@@ -934,7 +934,7 @@ export function storeDOMWithKey(
   editor: LexicalEditor,
 ): void {
   const keyToDOMMap = editor._keyToDOMMap;
-  // $FlowFixMe: internal field
+  // @ts-ignore: internal field
   dom['__lexicalKey_' + editor._key] = key;
   keyToDOMMap.set(key, dom);
 }

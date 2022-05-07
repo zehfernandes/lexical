@@ -19,6 +19,8 @@ export class GridCellNode extends ElementNode {
   }
 }
 
-export function $isGridCellNode(node: ?LexicalNode): boolean %checks {
+export function $isGridCellNode(
+  node: ElementNode | null,
+): node is GridCellNode {
   return node instanceof GridCellNode;
 }

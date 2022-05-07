@@ -10,7 +10,6 @@
 import type {ElementFormatType, LexicalCommand, TextFormatType} from 'lexical';
 
 export function createCommand<T>(): LexicalCommand<T> {
-  // $FlowFixMe: avoid freezing the object for perf reasons
   return {};
 }
 

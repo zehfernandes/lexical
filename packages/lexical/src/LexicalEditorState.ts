@@ -25,13 +25,13 @@ import {readEditorState} from './LexicalUpdates';
 import {$createRootNode} from './nodes/LexicalRootNode';
 
 export type ParsedEditorState = {
-  _nodeMap: Array<[NodeKey, ParsedNode]>,
-  _selection: null | ParsedSelection,
+  _nodeMap: Array<[NodeKey, ParsedNode]>;
+  _selection: null | ParsedSelection;
 };
 
 export type JSONEditorState = {
-  _nodeMap: Array<[NodeKey, LexicalNode]>,
-  _selection: null | ParsedSelection,
+  _nodeMap: Array<[NodeKey, LexicalNode]>;
+  _selection: null | ParsedSelection;
 };
 
 export function editorStateHasDirtySelection(

@@ -54,27 +54,27 @@ import {
 } from './LexicalUtils';
 
 export type TextPointType = {
-  _selection: RangeSelection | GridSelection,
-  getNode: () => TextNode,
-  is: (PointType) => boolean,
-  isAtNodeEnd: () => boolean,
-  isBefore: (PointType) => boolean,
-  key: NodeKey,
-  offset: number,
-  set: (key: NodeKey, offset: number, type: 'text' | 'element') => void,
-  type: 'text',
+  _selection: RangeSelection | GridSelection;
+  getNode: () => TextNode;
+  is: (point: PointType) => boolean;
+  isAtNodeEnd: () => boolean;
+  isBefore: (point: PointType) => boolean;
+  key: NodeKey;
+  offset: number;
+  set: (key: NodeKey, offset: number, type: 'text' | 'element') => void;
+  type: 'text';
 };
 
 export type ElementPointType = {
-  _selection: RangeSelection | GridSelection,
-  getNode: () => ElementNode,
-  is: (PointType) => boolean,
-  isAtNodeEnd: () => boolean,
-  isBefore: (PointType) => boolean,
-  key: NodeKey,
-  offset: number,
-  set: (key: NodeKey, offset: number, type: 'text' | 'element') => void,
-  type: 'element',
+  _selection: RangeSelection | GridSelection;
+  getNode: () => ElementNode;
+  is: (point: PointType) => boolean;
+  isAtNodeEnd: () => boolean;
+  isBefore: (point: PointType) => boolean;
+  key: NodeKey;
+  offset: number;
+  set: (key: NodeKey, offset: number, type: 'text' | 'element') => void;
+  type: 'element';
 };
 
 export type PointType = TextPointType | ElementPointType;
@@ -86,7 +86,7 @@ class Point {
   _selection: RangeSelection | GridSelection;
 
   constructor(key: NodeKey, offset: number, type: 'text' | 'element'): void {
-    // $FlowFixMe: is temporarily null
+    // @ts-ignore: is temporarily null
     this._selection = null;
     this.key = key;
     this.offset = offset;
@@ -150,7 +150,7 @@ function $createPoint(
   offset: number,
   type: 'text' | 'element',
 ): PointType {
-  // $FlowFixMe: intentionally cast as we use a class for perf reasons
+  // @ts-ignore: intentionally cast as we use a class for perf reasons
   return new Point(key, offset, type);
 }
 
@@ -215,9 +215,9 @@ function $setPointValues(
   type: 'text' | 'element',
 ): void {
   point.key = key;
-  // $FlowFixMe: internal utility function
+  // @ts-ignore: internal utility function
   point.offset = offset;
-  // $FlowFixMe: internal utility function
+  // @ts-ignore: internal utility function
   point.type = type;
 }
 
@@ -320,15 +320,15 @@ export class NodeSelection implements BaseSelection {
   }
 }
 
-export function $isRangeSelection(x: ?mixed): boolean %checks {
+export function $isRangeSelection(x: unknown): x is RangeSelection {
   return x instanceof RangeSelection;
 }
 
 export type GridSelectionShape = {
-  fromX: number,
-  fromY: number,
-  toX: number,
-  toY: number,
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
 };
 
 export class GridSelection implements BaseSelection {
@@ -480,7 +480,7 @@ export class GridSelection implements BaseSelection {
   }
 }
 
-export function $isGridSelection(x: ?mixed): boolean %checks {
+export function $isGridSelection(x: unknown): x is GridSelection {
   return x instanceof GridSelection;
 }
 
@@ -715,7 +715,7 @@ export class RangeSelection implements BaseSelection {
     const endPoint = isBefore ? focus : anchor;
     const startOffset = firstPoint.offset;
     const endOffset = endPoint.offset;
-    let firstNode: LexicalNode = selectedNodes[0];
+    let firstNode = selectedNodes[0];
 
     if (!$isTextNode(firstNode)) {
       invariant(false, 'insertText: first node is not a text node');
@@ -1659,7 +1659,7 @@ export class RangeSelection implements BaseSelection {
     if (domSelection.rangeCount > 0) {
       const range = domSelection.getRangeAt(0);
       // Apply the DOM selection to our Lexical selection.
-      // $FlowFixMe[incompatible-call]
+      // @ts-ignore[incompatible-call]
       this.applyDOMRange(range);
       this.dirty = true;
       // Because a range works on start and end, we might need to flip
@@ -1684,8 +1684,8 @@ export class RangeSelection implements BaseSelection {
         !isBackward &&
         // Delete forward handle case
         ((anchor.type === 'element' &&
-          // $FlowFixMe: always an element node
-          anchor.offset === (anchorNode: ElementNode).getChildrenSize()) ||
+          // @ts-ignore: always an element node
+          anchor.offset === anchorNode.getChildrenSize()) ||
           (anchor.type === 'text' &&
             anchor.offset === anchorNode.getTextContentSize()))
       ) {
@@ -1756,7 +1756,7 @@ export class RangeSelection implements BaseSelection {
   }
 }
 
-export function $isNodeSelection(x: ?mixed): boolean %checks {
+export function $isNodeSelection(x: unknown): x is NodeSelection {
   return x instanceof NodeSelection;
 }
 
@@ -1765,7 +1765,7 @@ function getCharacterOffset(point: PointType): number {
   if (point.type === 'text') {
     return offset;
   }
-  // $FlowFixMe: cast
+  // @ts-ignore: cast
   const parent: ElementNode = point.getNode();
   return offset === parent.getChildrenSize()
     ? parent.getTextContent().length
@@ -1806,7 +1806,7 @@ function $moveNativeSelection(
   direction: 'backward' | 'forward' | 'left' | 'right',
   granularity: 'character' | 'word' | 'lineboundary',
 ): void {
-  // $FlowFixMe[prop-missing]
+  // @ts-ignore[prop-missing]
   domSelection.modify(alter, direction, granularity);
 }
 
@@ -2010,7 +2010,7 @@ function resolveSelectionPointOnBoundary(
       ) {
         point.key = prevSibling.__key;
         point.offset = prevSibling.getChildrenSize();
-        // $FlowFixMe: intentional
+        // @ts-ignore: intentional
         point.type = 'element';
       } else if ($isTextNode(prevSibling) && !prevSibling.isInert()) {
         point.key = prevSibling.__key;
@@ -2035,7 +2035,7 @@ function resolveSelectionPointOnBoundary(
     if (isBackward && $isElementNode(nextSibling) && nextSibling.isInline()) {
       point.key = nextSibling.__key;
       point.offset = 0;
-      // $FlowFixMe: intentional
+      // @ts-ignore: intentional
       point.type = 'element';
     } else if (
       (isCollapsed || isBackward) &&

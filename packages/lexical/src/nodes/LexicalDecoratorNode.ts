@@ -1,3 +1,4 @@
+/* global __DEV__ */
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -15,7 +16,7 @@ import invariant from 'shared/invariant';
 import {LexicalNode} from '../LexicalNode';
 
 export class DecoratorNode extends LexicalNode {
-  constructor(key?: NodeKey): void {
+  constructor(key?: NodeKey) {
     super(key);
 
     // ensure custom nodes implement required methods
@@ -31,7 +32,7 @@ export class DecoratorNode extends LexicalNode {
     }
   }
 
-  decorate(editor: LexicalEditor): mixed {
+  decorate(editor: LexicalEditor) {
     invariant(false, 'decorate: base method not extended');
   }
 
@@ -44,6 +45,8 @@ export class DecoratorNode extends LexicalNode {
   }
 }
 
-export function $isDecoratorNode(node: ?LexicalNode): boolean %checks {
+export function $isDecoratorNode(
+  node: LexicalNode | null,
+): node is DecoratorNode {
   return node instanceof DecoratorNode;
 }

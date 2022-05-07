@@ -56,6 +56,13 @@ module.exports = {
         sourceType: 'module',
       },
       plugins: ['react', '@typescript-eslint'],
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'no-prototype-builtins': 'off',
+        'no-unused-vars': 'off',
+      },
     },
   ],
 
