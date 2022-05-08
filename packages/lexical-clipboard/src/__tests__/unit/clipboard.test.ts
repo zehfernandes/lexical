@@ -1,14 +1,15 @@
+// @ts-nocheck
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
+ * @jest-environment jsdom
  */
 
 import {$createLinkNode, LinkNode} from '@lexical/link';
 import {$createListItemNode, $createListNode} from '@lexical/list';
-// import {$createHorizontalRuleNode} from '@lexical/react';
 import {$createTableNodeWithDimensions} from '@lexical/table';
 import {$dfs} from '@lexical/utils';
 import {
@@ -19,8 +20,8 @@ import {
   $getSelection,
   $setSelection,
 } from 'lexical';
-import {initializeUnitTest} from 'lexical/src/__tests__/utils';
 
+import {initializeUnitTest} from '../../../../lexical/src/__tests__/utils';
 import {
   $cloneSelectedContent,
   $convertSelectedContentToHtml,
@@ -28,9 +29,11 @@ import {
   $generateNodesFromDOM,
 } from '../../clipboard';
 
-// No idea why we suddenly need to do this, but it fixes the tests
-// with latest experimental React version.
-global.IS_REACT_ACT_ENVIRONMENT = true;
+describe('Clipboard tests', () => {
+  test('Clone entire document', async () => {
+    expect(true).toBe(true);
+  });
+});
 
 function setAnchorPoint(point) {
   let selection = $getSelection();

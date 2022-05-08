@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -161,7 +162,7 @@ export function $createCodeHighlightNode(
 }
 
 export function $isCodeHighlightNode(
-  node: LexicalNode | null | undefined,
+  node: LexicalNode | CodeHighlightNode | null | undefined,
 ): node is CodeHighlightNode {
   return node instanceof CodeHighlightNode;
 }

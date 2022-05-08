@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2019",
     "lib": ["esnext", "dom", "dom.iterable"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "downlevelIteration": true,
     "noEmit": true,
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "paths": {
       "lexical": ["./packages/lexical/Lexical.d.ts"],
-
       "@lexical/list": ["./packages/lexical-list/LexicalList.d.ts"],
       "@lexical/table": ["./packages/lexical-table/LexicalTable.d.ts"],
       "@lexical/file": ["./packages/lexical-file/LexicalFile.d.ts"],
@@ -187,14 +186,16 @@
 
       "@lexical/yjs": ["./packages/lexical-yjs/LexicalYjs.d.ts"],
 
-      "shared/canUseDOM": ["./packages/shared-ts/src/canUseDOM.ts"],
-      "shared/getDOMSelection": ["./packages/shared-ts/src/getDOMSelection.ts"],
-      "shared/simpleDiffWithCursor": [
-        "./packages/shared-ts/src/simpleDiffWithCursor.ts"
+      "shared-ts/canUseDOM": ["packages/shared-ts/src/canUseDOM.ts"],
+      "shared-ts/getDOMSelection": [
+        "packages/shared-ts/src/getDOMSelection.ts"
       ],
-      "shared-ts/invariant": ["./packages/shared-ts/src/invariant.ts"],
-      "shared/environment": ["./packages/shared-ts/src/environment.ts"],
-      "shared/useLayoutEffect": ["./packages/shared-ts/src/useLayoutEffect.ts"]
+      "shared-ts/simpleDiffWithCursor": [
+        "packages/shared-ts/src/simpleDiffWithCursor.ts"
+      ],
+      "shared-ts/invariant": ["packages/shared-ts/src/invariant.ts"],
+      "shared-ts/environment": ["packages/shared-ts/src/environment.ts"],
+      "shared-ts/useLayoutEffect": ["packages/shared-ts/src/useLayoutEffect.ts"]
     }
   },
   "exclude": ["./node_modules/**/*"]

@@ -17,21 +17,25 @@ module.exports = {
       ...common,
       displayName: 'unit',
       globals: {
+        IS_REACT_ACT_ENVIRONMENT: true,
         __DEV__: true,
+        'ts-jest': {
+          tsconfig: 'tsconfig.test.json',
+        },
       },
       moduleNameMapper: {
         '^./dist/(.+)': './src/$1',
-        '^@lexical/clipboard$':
-          '<rootDir>/packages/lexical-clipboard/src/index.js',
-        '^@lexical/code$': '<rootDir>/packages/lexical-code/src/index.js',
-        '^@lexical/dragon$': '<rootDir>/packages/lexical-dragon/src/index.js',
-        '^@lexical/file$': '<rootDir>/packages/lexical-file/src/index.js',
-        '^@lexical/hashtag$': '<rootDir>/packages/lexical-hashtag/src/index.js',
-        '^@lexical/history$': '<rootDir>/packages/lexical-history/src/index.js',
-        '^@lexical/link$': '<rootDir>/packages/lexical-link/src/index.js',
-        '^@lexical/list$': '<rootDir>/packages/lexical-list/src/index.js',
-        '^@lexical/mark$': '<rootDir>/packages/lexical-mark/src/index.js',
-        '^@lexical/offset$': '<rootDir>/packages/lexical-offset/src/index.js',
+        '^@lexical/clipboard':
+          '<rootDir>/packages/lexical-clipboard/src/index.ts',
+        '^@lexical/code': '<rootDir>/packages/lexical-code/src/index.ts',
+        '^@lexical/dragon': '<rootDir>/packages/lexical-dragon/src/index.ts',
+        '^@lexical/file': '<rootDir>/packages/lexical-file/src/index.js',
+        '^@lexical/hashtag': '<rootDir>/packages/lexical-hashtag/src/index.js',
+        '^@lexical/history': '<rootDir>/packages/lexical-history/src/index.ts',
+        '^@lexical/link': '<rootDir>/packages/lexical-link/src/index.js',
+        '^@lexical/list': '<rootDir>/packages/lexical-list/src/index.js',
+        '^@lexical/mark': '<rootDir>/packages/lexical-mark/src/index.js',
+        '^@lexical/offset': '<rootDir>/packages/lexical-offset/src/index.js',
         '^@lexical/overflow$':
           '<rootDir>/packages/lexical-overflow/src/index.js',
         '^@lexical/plain-text$':
@@ -68,16 +72,29 @@ module.exports = {
           '<rootDir>/packages/lexical-rich-text/src/index.js',
         '^@lexical/selection$':
           '<rootDir>/packages/lexical-selection/src/index.js',
-        '^@lexical/table$': '<rootDir>/packages/lexical-table/src/index.js',
-        '^@lexical/text$': '<rootDir>/packages/lexical-text/src/index.js',
-        '^@lexical/utils$': '<rootDir>/packages/lexical-utils/src/index.js',
-        '^@lexical/yjs$': '<rootDir>/packages/lexical-yjs/src/index.js',
-        '^lexical$': '<rootDir>/packages/lexical/src/index.js',
-        '^shared/canUseDOM$': '<rootDir>/packages/shared/src/canUseDOM.js',
-        '^shared/environment$': '<rootDir>/packages/shared/src/environment.js',
+        '^@lexical/table': '<rootDir>/packages/lexical-table/src/index.js',
+        '^@lexical/text': '<rootDir>/packages/lexical-text/src/index.js',
+        '^@lexical/utils': '<rootDir>/packages/lexical-utils/src/index.js',
+        '^@lexical/yjs': '<rootDir>/packages/lexical-yjs/src/index.js',
+        '^lexical': '<rootDir>/packages/lexical/src/index.js',
+        '^lexical/src': './packages/lexical',
+        '^shared-ts/canUseDOM$':
+          '<rootDir>/packages/shared-ts/src/canUseDOM.ts',
+        '^shared-ts/environment$':
+          '<rootDir>/packages/shared-ts/src/environment.ts',
+        '^shared-ts/getDOMSelection$':
+          '<rootDir>/packages/shared-ts/src/getDOMSelection.ts',
+        '^shared-ts/invariant$':
+          '<rootDir>/packages/shared-ts/src/invariant.ts',
+        '^shared-ts/simpleDiffWithCursor$':
+          '<rootDir>/packages/shared-ts/src/simpleDiffWithCursor.ts',
+        '^shared-ts/useLayoutEffect$':
+          '<rootDir>/packages/shared-ts/src/useLayoutEffect.ts',
+        '^shared/canUseDOM': '<rootDir>/packages/shared/src/canUseDOM.js',
+        '^shared/environment': '<rootDir>/packages/shared/src/environment.js',
         '^shared/getDOMSelection$':
           '<rootDir>/packages/shared/src/getDOMSelection.js',
-        '^shared/invariant$': '<rootDir>/packages/shared/src/invariant.js',
+        '^shared/invariant': '<rootDir>/packages/shared/src/invariant.js',
         '^shared/simpleDiffWithCursor$':
           '<rootDir>/packages/shared/src/simpleDiffWithCursor.js',
         '^shared/useLayoutEffect$':
@@ -85,7 +102,13 @@ module.exports = {
         formatProdErrorMessage:
           '<rootDir>/scripts/error-codes/formatProdErrorMessage.js',
       },
-      testMatch: ['**/__tests__/unit/**/*.test.js'],
+      preset: 'ts-jest',
+      testEnvironment: 'jsdom',
+      testMatch: ['**/__tests__/unit/**/*.test{.ts,.js}'],
+      transform: {
+        '^.+\\.jsx?$': 'babel-jest',
+        '^.+\\.tsx$': 'ts-jest',
+      },
     },
     {
       ...common,

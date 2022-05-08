@@ -61,7 +61,7 @@ import * as React from 'react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 // $FlowFixMe
 import {createPortal} from 'react-dom';
-import {IS_APPLE} from 'shared/environment';
+import {IS_APPLE} from 'shared-ts/environment';
 
 import useModal from '../hooks/useModal';
 import catTypingGif from '../images/cat-typing.gif';

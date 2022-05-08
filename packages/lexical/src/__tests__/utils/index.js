@@ -6,7 +6,7 @@
  *
  */
 
-import type {LexicalEditor} from 'lexical';
+import type {EditorConfig, LexicalEditor} from 'lexical';
 
 import {CodeHighlightNode, CodeNode} from '@lexical/code';
 import {HashtagNode} from '@lexical/hashtag';
@@ -31,7 +31,7 @@ type TestEnv = {
 
 export function initializeUnitTest(
   runTests: (testEnv: TestEnv) => void,
-  editorConfig,
+  editorConfig?: EditorConfig,
 ) {
   const testEnv: TestEnv = {
     container: null,

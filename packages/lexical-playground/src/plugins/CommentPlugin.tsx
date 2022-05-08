@@ -41,7 +41,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import * as React from 'react';
 // $FlowFixMe: Flow doesn't see react-dom module
 import {createPortal} from 'react-dom';
-import useLayoutEffect from 'shared/useLayoutEffect';
+import useLayoutEffect from 'shared-ts/useLayoutEffect';
 
 import {cloneThread, createComment, createThread} from '../commenting';
 import useModal from '../hooks/useModal';

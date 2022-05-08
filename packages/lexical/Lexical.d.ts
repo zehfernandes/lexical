@@ -324,6 +324,21 @@ export type DOMExportOutput = {
 };
 export type NodeKey = string;
 export declare class LexicalNode {
+  setTextContent(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
+  getFirstChild() {
+    throw new Error('Method not implemented.');
+  }
+  __text(__text: any) {
+    throw new Error('Method not implemented.');
+  }
+  getFirstDescendant() {
+    throw new Error('Method not implemented.');
+  }
+  getChildren() {
+    throw new Error('Method not implemented.');
+  }
   __type: string;
   __key: NodeKey;
   __parent: null | NodeKey;
@@ -620,7 +635,7 @@ export declare class TextNode extends LexicalNode {
 }
 export function $createTextNode(text?: string): TextNode;
 export function $isTextNode(
-  node: LexicalNode | null | undefined,
+  node: TextNode | LexicalNode | null | undefined,
 ): node is TextNode;
 
 /**
