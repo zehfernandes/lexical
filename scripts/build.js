@@ -304,7 +304,7 @@ const packages = [
     modules: [
       {
         outputFileName: 'Lexical',
-        sourceFileName: 'index.ts',
+        sourceFileName: 'index.js',
       },
     ],
     name: 'Lexical Core',

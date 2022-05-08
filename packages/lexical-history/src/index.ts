@@ -6,6 +6,17 @@
  *
  */
 
+import type {
+  EditorState,
+  GridSelection,
+  IntentionallyMarkedAsDirtyElement,
+  LexicalEditor,
+  LexicalNode,
+  NodeKey,
+  NodeSelection,
+  RangeSelection,
+} from 'lexical';
+
 import {mergeRegister} from '@lexical/utils';
 import {
   $getSelection,
@@ -17,14 +28,6 @@ import {
   CLEAR_EDITOR_COMMAND,
   CLEAR_HISTORY_COMMAND,
   COMMAND_PRIORITY_EDITOR,
-  EditorState,
-  GridSelection,
-  IntentionallyMarkedAsDirtyElement,
-  LexicalEditor,
-  LexicalNode,
-  NodeKey,
-  NodeSelection,
-  RangeSelection,
   REDO_COMMAND,
   UNDO_COMMAND,
 } from 'lexical';

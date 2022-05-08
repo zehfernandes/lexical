@@ -1,10 +1,10 @@
 {
-  "compilerOptions": {
-    "noEmit": false,
-    "declaration": true,
-    "emitDeclarationOnly": true
-  },
-  "include": ["./packages/shared"],
-  "exclude": ["./packages/lexical-playground"],
+  "include": [
+    "packages/lexical-clipboard/**/*",
+    "packages/lexical-code/**/*",
+    "packages/lexical-dragon/**/*",
+    "packages/lexical-history/**/*"
+  ],
+  "exclude": ["./packages/lexical-playground/**/*"],
   "extends": "./tsconfig.json"
 }

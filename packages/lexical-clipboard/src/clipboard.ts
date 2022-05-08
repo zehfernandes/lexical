@@ -39,7 +39,7 @@ import {
   $setSelection,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import invariant from 'shared/invariant';
+import invariant from 'shared-ts/invariant';
 
 const IGNORE_TAGS = new Set(['STYLE']);
 export function $getHtmlContent(editor: LexicalEditor): string | null {

@@ -1,6 +1,17 @@
-import type {LexicalEditor} from 'lexical';
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
 
-import {$getSelection, $isRangeSelection, $isTextNode} from 'lexical';
+import {
+  $getSelection,
+  $isRangeSelection,
+  $isTextNode,
+  LexicalEditor,
+} from 'lexical';
 
 export function registerDragonSupport(editor: LexicalEditor): () => void {
   const handler = (event: MessageEvent) => {
