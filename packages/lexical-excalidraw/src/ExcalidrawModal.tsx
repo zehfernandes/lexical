@@ -13,14 +13,14 @@ import * as React from 'react';
 import {ReactPortal, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 
-import Button from '../../ui/Button';
-import Modal from '../../ui/Modal';
+import Button from '../../lexical-playground/src/ui/Button';
+import Modal from '../../lexical-playground/src/ui/Modal';
 
 export type ExcalidrawElementFragment = {
   isDeleted?: boolean;
 };
 
-type Props = {
+type ModalProps = {
   closeOnClickOutside?: boolean;
   /**
    * The initial set of elements to draw into the scene
@@ -56,7 +56,7 @@ export default function ExcalidrawModal({
   isShown = false,
   onHide,
   onDelete,
-}: Props): ReactPortal | null {
+}: ModalProps): ReactPortal | null {
   const excalidrawRef = useRef(null);
   const excaliDrawModelRef = useRef(null);
   const [discardModalOpen, setDiscardModalOpen] = useState(false);

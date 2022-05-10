@@ -48,6 +48,7 @@ const wwwMappings = {
   '@lexical/clipboard': 'LexicalClipboard',
   '@lexical/code': 'LexicalCode',
   '@lexical/dragon': 'LexicalDragon',
+  '@lexical/excalidraw': 'LexicalExcalidraw',
   '@lexical/file': 'LexicalFile',
   '@lexical/hashtag': 'LexicalHashtag',
   '@lexical/headless': 'LexicalHeadless',
@@ -117,6 +118,7 @@ const externals = [
   '@lexical/code',
   '@lexical/yjs',
   '@lexical/plain-text',
+  '@lexical/excalidraw',
   '@lexical/rich-text',
   '@lexical/mark',
   '@lexical/dragon',
@@ -529,6 +531,17 @@ const packages = [
     name: 'Lexical Headless',
     outputPath: './packages/lexical-headless/dist/',
     sourcePath: './packages/lexical-headless/src/',
+  },
+  {
+    modules: [
+      {
+        outputFileName: 'LexicalExcalidraw',
+        sourceFileName: 'index.tsx',
+      },
+    ],
+    name: 'Lexical Excalidraw',
+    outputPath: './packages/lexical-excalidraw/dist/',
+    sourcePath: './packages/lexical-excalidraw/src/',
   },
   {
     modules: [

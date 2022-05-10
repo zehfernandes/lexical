@@ -25,7 +25,7 @@ import {
 import * as React from 'react';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
-import ImageResizer from '../../ui/ImageResizer';
+import ImageResizer from '../../lexical-playground/src/ui/ImageResizer';
 import ExcalidrawImage from './ExcalidrawImage';
 import ExcalidrawModal from './ExcalidrawModal';
 

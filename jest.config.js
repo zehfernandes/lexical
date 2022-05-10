@@ -29,6 +29,8 @@ module.exports = {
           '<rootDir>/packages/lexical-clipboard/src/index.js',
         '^@lexical/code$': '<rootDir>/packages/lexical-code/src/index.ts',
         '^@lexical/dragon$': '<rootDir>/packages/lexical-dragon/src/index.ts',
+        '^@lexical/excalidraw$':
+          '<rootDir>/packages/lexical-excalidraw/src/index.tsx',
         '^@lexical/file$': '<rootDir>/packages/lexical-file/src/index.js',
         '^@lexical/hashtag$': '<rootDir>/packages/lexical-hashtag/src/index.js',
         '^@lexical/history$': '<rootDir>/packages/lexical-history/src/index.ts',
@@ -54,6 +56,8 @@ module.exports = {
           '<rootDir>/packages/lexical-react/src/LexicalComposerContext.js',
         '^@lexical/react/LexicalContentEditable$':
           '<rootDir>/packages/lexical-react/src/LexicalContentEditable.jsx',
+        '^@lexical/react/LexicalExcalidrawPlugin$':
+          '<rootDir>/packages/rexical-react/src/LexicalExcalidrawPlugin.js',
         '^@lexical/react/LexicalLinkPlugin$':
           '<rootDir>/packages/lexical-react/src/LexicalLinkPlugin.js',
         '^@lexical/react/LexicalListPlugin$':

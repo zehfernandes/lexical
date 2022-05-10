@@ -3,7 +3,8 @@
     "packages/lexical-clipboard/**/*",
     "packages/lexical-code/**/*",
     "packages/lexical-dragon/**/*",
-    "packages/lexical-history/**/*"
+    "packages/lexical-history/**/*",
+    "packages/lexical-excalidraw/**/*",
   ],
   "exclude": ["node_modules/**/*", "packages/lexical-playground/**/*"],
   "extends": "./tsconfig.json"
