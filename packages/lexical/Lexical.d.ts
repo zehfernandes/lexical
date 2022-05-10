@@ -374,6 +374,8 @@ export declare class LexicalNode {
   selectPrevious(anchorOffset?: number, focusOffset?: number): Selection;
   selectNext(anchorOffset?: number, focusOffset?: number): Selection;
   markDirty(): void;
+  setPrev(key: NodeKey): void;
+  setNext(key: NodeKey): void;
 }
 export type NodeMap = Map<NodeKey, LexicalNode>;
 
