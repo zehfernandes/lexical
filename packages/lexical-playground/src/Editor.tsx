@@ -21,7 +21,7 @@ import ListPlugin from '@lexical/react/LexicalListPlugin';
 import PlainTextPlugin from '@lexical/react/LexicalPlainTextPlugin';
 import RichTextPlugin from '@lexical/react/LexicalRichTextPlugin';
 import TablesPlugin from '@lexical/react/LexicalTablePlugin';
-import ExcalidrawPlugin from '@lexical/react/LexicalExcalidrawPlugin';
+import {ExcalidrawPlugin} from '@lexical/react/LexicalExcalidrawPlugin';
 
 import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
 import {$createParagraphNode, $createTextNode, $getRoot} from 'lexical';

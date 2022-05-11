@@ -50,4 +50,4 @@ export declare class AutoExcalidrawNode extends ExcalidrawNode {
 
 export const INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void>;
 
-export default function ExcalidrawPlugin(): null;
+export function ExcalidrawPlugin(): JSX.Element;
