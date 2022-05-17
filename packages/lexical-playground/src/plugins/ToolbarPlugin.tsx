@@ -68,6 +68,7 @@ import catTypingGif from '../images/cat-typing.gif';
 import yellowFlowerImage from '../images/yellow-flower.jpg';
 import {$createStickyNode} from '../nodes/StickyNode';
 import Button from '../ui/Button';
+import ColorPicker from '../ui/ColorPicker';
 import DropDown from '../ui/DropDown';
 import FileInput from '../ui/FileInput.jsx';
 import KatexEquationAlterer from '../ui/KatexEquationAlterer';
@@ -163,7 +164,6 @@ function positionEditorElement(editor, rect) {
 function FloatingLinkEditor({editor}: {editor: LexicalEditor}): JSX.Element {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef(null);
-  const mouseDownRef = useRef(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [isEditMode, setEditMode] = useState(false);
   const [lastSelection, setLastSelection] = useState(null);
@@ -208,9 +208,7 @@ function FloatingLinkEditor({editor}: {editor: LexicalEditor}): JSX.Element {
         rect = domRange.getBoundingClientRect();
       }
 
-      if (!mouseDownRef.current) {
-        positionEditorElement(editorElem, rect);
-      }
+      positionEditorElement(editorElem, rect);
       setLastSelection(selection);
     } else if (!activeElement || activeElement.className !== 'link-input') {
       positionEditorElement(editorElem, null);
@@ -221,6 +219,19 @@ function FloatingLinkEditor({editor}: {editor: LexicalEditor}): JSX.Element {
 
     return true;
   }, [editor]);
+
+  useEffect(() => {
+    const onResize = () => {
+      editor.getEditorState().read(() => {
+        updateLinkEditor();
+      });
+    };
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [editor, updateLinkEditor]);
 
   useEffect(() => {
     return mergeRegister(
@@ -767,6 +778,8 @@ export default function ToolbarPlugin(): JSX.Element {
   const [blockType, setBlockType] = useState('paragraph');
   const [selectedElementKey, setSelectedElementKey] = useState(null);
   const [fontSize, setFontSize] = useState<string>('15px');
+  const [fontColor, setFontColor] = useState<string>('#000');
+  const [bgColor, setBgColor] = useState<string>('#fff');
   const [fontFamily, setFontFamily] = useState<string>('Arial');
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
@@ -841,6 +854,16 @@ export default function ToolbarPlugin(): JSX.Element {
       setFontSize(
         $getSelectionStyleValueForProperty(selection, 'font-size', '15px'),
       );
+      setFontColor(
+        $getSelectionStyleValueForProperty(selection, 'color', '#000'),
+      );
+      setBgColor(
+        $getSelectionStyleValueForProperty(
+          selection,
+          'background-color',
+          '#fff',
+        ),
+      );
       setFontFamily(
         $getSelectionStyleValueForProperty(selection, 'font-family', 'Arial'),
       );
@@ -900,6 +923,20 @@ export default function ToolbarPlugin(): JSX.Element {
   const onFontSizeSelect = useCallback(
     (e) => {
       applyStyleText({'font-size': e.target.value});
+    },
+    [applyStyleText],
+  );
+
+  const onFontColorSelect = useCallback(
+    (value: string) => {
+      applyStyleText({color: value});
+    },
+    [applyStyleText],
+  );
+
+  const onBgColorSelect = useCallback(
+    (value: string) => {
+      applyStyleText({'background-color': value});
     },
     [applyStyleText],
   );
@@ -1069,6 +1106,22 @@ export default function ToolbarPlugin(): JSX.Element {
               <FloatingLinkEditor editor={activeEditor} />,
               document.body,
             )}
+          <ColorPicker
+            buttonClassName="toolbar-item color-picker"
+            buttonAriaLabel="Formatting text color"
+            buttonIconClassName="icon font-color"
+            color={fontColor}
+            onChange={onFontColorSelect}
+            title="text color"
+          />
+          <ColorPicker
+            buttonClassName="toolbar-item color-picker"
+            buttonAriaLabel="Formatting background color"
+            buttonIconClassName="icon bg-color"
+            color={bgColor}
+            onChange={onBgColorSelect}
+            title="bg color"
+          />
           <DropDown
             buttonClassName="toolbar-item spaced"
             buttonLabel=""

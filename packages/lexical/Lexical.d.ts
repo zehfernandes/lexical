@@ -128,6 +128,7 @@ export declare class LexicalEditor {
   _observer: null | MutationObserver;
   _key: string;
   _readOnly: boolean;
+  _headless: boolean;
   isComposing(): boolean;
   registerUpdateListener(listener: UpdateListener): () => void;
   registerRootListener(listener: RootListener): () => void;
@@ -249,7 +250,7 @@ export function createEditor(editorConfig?: {
   editorState?: EditorState;
   theme?: EditorThemeClasses;
   parentEditor?: LexicalEditor;
-  nodes?: Array<Class<LexicalNode>>;
+  nodes?: ReadonlyArray<Class<LexicalNode>>;
   onError: (error: Error) => void;
   disableEvents?: boolean;
   readOnly?: boolean;
@@ -353,9 +354,7 @@ export declare class LexicalNode {
   isParentOf(targetNode: LexicalNode): boolean;
   getNodesBetween(targetNode: LexicalNode): Array<LexicalNode>;
   isDirty(): boolean;
-  // $FlowFixMe
   getLatest<T extends LexicalNode>(): T;
-  // $FlowFixMe
   getWritable<T extends LexicalNode>(): T;
   getTextContent(includeInert?: boolean, includeDirectionless?: false): string;
   getTextContentSize(
@@ -675,19 +674,19 @@ export declare class ElementNode extends LexicalNode {
   constructor(key?: NodeKey);
   getFormat(): number;
   getIndent(): number;
-  getChildren(): Array<LexicalNode>;
+  getChildren<T extends Array<LexicalNode>>(): T;
   getChildrenKeys(): Array<NodeKey>;
   getChildrenSize(): number;
   isEmpty(): boolean;
   isDirty(): boolean;
   getAllTextNodes(includeInert?: boolean): Array<TextNode>;
-  getFirstDescendant(): null | LexicalNode;
-  getLastDescendant(): null | LexicalNode;
-  getDescendantByIndex(index: number): LexicalNode;
+  getFirstDescendant<T extends LexicalNode>(): null | T;
+  getLastDescendant<T extends LexicalNode>(): null | T;
+  getDescendantByIndex<T extends LexicalNode>(index: number): null | T;
   getFirstChild<T extends LexicalNode>(): null | T;
   getFirstChildOrThrow<T extends LexicalNode>(): T;
-  getLastChild(): null | LexicalNode;
-  getChildAtIndex(index: number): null | LexicalNode;
+  getLastChild<T extends LexicalNode>(): null | T;
+  getChildAtIndex<T extends LexicalNode>(index: number): null | T;
   getTextContent(includeInert?: boolean, includeDirectionless?: false): string;
   getDirection(): 'ltr' | 'rtl' | null;
   hasFormat(type: ElementFormatType): boolean;

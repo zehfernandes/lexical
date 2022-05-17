@@ -6,6 +6,6 @@
  *
  */
 
-'use strict';
+import {exportFile, importFile} from './fileImportExport';
 
-module.exports = require('./dist/LexicalClipboard.js');
+export {exportFile, importFile};

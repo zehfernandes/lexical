@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -19,7 +19,9 @@ export declare class MarkNode extends ElementNode {
   canInsertTextAfter(): false;
   isInline(): true;
 }
-export function $isMarkNode(node: LexicalNode | null | undefined): boolean;
+export function $isMarkNode(
+  node: LexicalNode | null | undefined,
+): node is MarkNode;
 export function $createMarkNode(ids: Array<string>): MarkNode;
 export function $getMarkIDs(
   node: TextNode,

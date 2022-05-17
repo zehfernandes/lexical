@@ -26,22 +26,24 @@ module.exports = {
       moduleNameMapper: {
         '^./dist/(.+)': './src/$1',
         '^@lexical/clipboard$':
-          '<rootDir>/packages/lexical-clipboard/src/index.js',
+          '<rootDir>/packages/lexical-clipboard/src/index.ts',
         '^@lexical/code$': '<rootDir>/packages/lexical-code/src/index.ts',
         '^@lexical/dragon$': '<rootDir>/packages/lexical-dragon/src/index.ts',
         '^@lexical/excalidraw$':
           '<rootDir>/packages/lexical-excalidraw/src/index.tsx',
-        '^@lexical/file$': '<rootDir>/packages/lexical-file/src/index.js',
-        '^@lexical/hashtag$': '<rootDir>/packages/lexical-hashtag/src/index.js',
+        '^@lexical/file$': '<rootDir>/packages/lexical-file/src/index.ts',
+        '^@lexical/hashtag$': '<rootDir>/packages/lexical-hashtag/src/index.ts',
+        '^@lexical/headless$':
+          '<rootDir>/packages/lexical-headless/src/index.ts',
         '^@lexical/history$': '<rootDir>/packages/lexical-history/src/index.ts',
         '^@lexical/link$': '<rootDir>/packages/lexical-link/src/index.js',
         '^@lexical/list$': '<rootDir>/packages/lexical-list/src/index.js',
-        '^@lexical/mark$': '<rootDir>/packages/lexical-mark/src/index.js',
+        '^@lexical/mark$': '<rootDir>/packages/lexical-mark/src/index.ts',
         '^@lexical/offset$': '<rootDir>/packages/lexical-offset/src/index.js',
         '^@lexical/overflow$':
           '<rootDir>/packages/lexical-overflow/src/index.js',
         '^@lexical/plain-text$':
-          '<rootDir>/packages/lexical-plain-text/src/index.js',
+          '<rootDir>/packages/lexical-plain-text/src/index.ts',
         '^@lexical/react/DEPRECATED_useLexicalRichText$':
           '<rootDir>/packages/lexical-react/src/DEPRECATED_useLexicalRichText.js',
         '^@lexical/react/LexicalAutoLinkPlugin$':
@@ -73,7 +75,7 @@ module.exports = {
         '^@lexical/react/useLexicalEditor$':
           '<rootDir>/packages/lexical-react/src/useLexicalEditor.js',
         '^@lexical/rich-text$':
-          '<rootDir>/packages/lexical-rich-text/src/index.js',
+          '<rootDir>/packages/lexical-rich-text/src/index.ts',
         '^@lexical/selection$':
           '<rootDir>/packages/lexical-selection/src/index.js',
         '^@lexical/table$': '<rootDir>/packages/lexical-table/src/index.js',
@@ -81,6 +83,18 @@ module.exports = {
         '^@lexical/utils$': '<rootDir>/packages/lexical-utils/src/index.js',
         '^@lexical/yjs$': '<rootDir>/packages/lexical-yjs/src/index.js',
         '^lexical$': '<rootDir>/packages/lexical/src/index.js',
+        '^shared-ts/canUseDOM$':
+          '<rootDir>/packages/shared-ts/src/canUseDOM.ts',
+        '^shared-ts/environment$':
+          '<rootDir>/packages/shared-ts/src/environment.ts',
+        '^shared-ts/getDOMSelection$':
+          '<rootDir>/packages/shared-ts/src/getDOMSelection.ts',
+        '^shared-ts/invariant$':
+          '<rootDir>/packages/shared-ts/src/invariant.ts',
+        '^shared-ts/simpleDiffWithCursor$':
+          '<rootDir>/packages/shared-ts/src/simpleDiffWithCursor.ts',
+        '^shared-ts/useLayoutEffect$':
+          '<rootDir>/packages/shared-ts/src/useLayoutEffect.ts',
         '^shared/canUseDOM$': '<rootDir>/packages/shared/src/canUseDOM.js',
         '^shared/environment$': '<rootDir>/packages/shared/src/environment.js',
         '^shared/getDOMSelection$':
