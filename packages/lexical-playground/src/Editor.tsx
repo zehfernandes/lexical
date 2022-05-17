@@ -57,10 +57,20 @@ import TwitterPlugin from './plugins/TwitterPlugin';
 import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
+import Modal from './ui/Modal';
+import Excalidraw from '@excalidraw/excalidraw';
+import ExcalidrawImage from './ui/ExcalidrawImage';
 
 const skipCollaborationInit =
   // @ts-ignore
   window.parent != null && window.parent.frames.right === window;
+
+
+// This is a hacky work-around for Excalidraw + Vite.
+// In DEV, Vite pulls this in fine, in prod it doesn't. It seems
+// like a module resolution issue with ESM vs CJS?
+const _Excalidraw =
+  Excalidraw.$$typeof != null ? Excalidraw : Excalidraw.default;
 
 function prepopulatedRichText() {
   const root = $getRoot();
@@ -216,7 +226,7 @@ export default function Editor(): JSX.Element {
             <HorizontalRulePlugin />
             <CharacterStylesPopupPlugin />
             <EquationsPlugin />
-            <ExcalidrawPlugin />
+            <ExcalidrawPlugin excalidrawImage={ExcalidrawImage} modal={Modal} excalidraw={_Excalidraw} />
             <TabFocusPlugin />
           </>
         ) : (

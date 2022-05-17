@@ -37,7 +37,9 @@ declare export class ExcalidrawNode extends ElementNode {
   canBeEmpty(): false;
   isInline(): true;
 }
-declare export function $createExcalidrawNode(): ExcalidrawNode;
+declare export function $createExcalidrawNode(
+  modalComponent: JSX.Element,
+): ExcalidrawNode;
 declare export function $isExcalidrawNode(
   node: ?LexicalNode,
 ): boolean %checks(node instanceof ExcalidrawNode);

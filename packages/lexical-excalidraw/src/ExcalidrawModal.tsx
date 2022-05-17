@@ -6,16 +6,29 @@
  *
  */
 
-import Excalidraw from '@excalidraw/excalidraw';
 import * as React from 'react';
 import {ReactPortal, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 
-import Modal from '../../lexical-playground/src/ui/Modal';
-
 export type ExcalidrawElementFragment = {
   isDeleted?: boolean;
 };
+
+export type Modal = ({ onClose, children, title, closeOnClickOutside }: {
+  children: JSX.Element | string | (JSX.Element | string)[];
+  closeOnClickOutside?: boolean;
+  onClose: () => void;
+  title: string;
+}) => JSX.Element;
+
+export type Excalidraw = ({ onChange, initialData }: {
+  onChange: (els: ReadonlyArray<ExcalidrawElementFragment>) => void;
+  initialData: {
+    appState: {isLoading: boolean},
+    elements: ReadonlyArray<ExcalidrawElementFragment>,
+  }
+}) => JSX.Element;
+
 
 type ModalProps = {
   closeOnClickOutside?: boolean;
@@ -39,6 +52,12 @@ type ModalProps = {
    * Callback when the save button is clicked
    */
   onSave: (elements: ReadonlyArray<ExcalidrawElementFragment>) => void;
+
+  /**
+   * Modal component to be used for modals
+   */
+  Modal: Modal;
+  Excalidraw: Excalidraw;
 };
 
 const ExcalidrawModalOverlayStyles = {
@@ -122,6 +141,8 @@ export default function ExcalidrawModal({
   isShown = false,
   onHide,
   onDelete,
+  Modal,
+  Excalidraw,
 }: ModalProps): ReactPortal | null {
   const excalidrawRef = useRef(null);
   const excaliDrawModelRef = useRef(null);
@@ -181,7 +202,7 @@ export default function ExcalidrawModal({
     }
   };
 
-  function ShowDiscardDialog(): JSX.Element {
+  function ShowDiscardDialog(): React.ReactElement {
     return (
       <Modal
         title="Discard"
@@ -223,12 +244,6 @@ export default function ExcalidrawModal({
     setElements(els);
   };
 
-  // This is a hacky work-around for Excalidraw + Vite.
-  // In DEV, Vite pulls this in fine, in prod it doesn't. It seems
-  // like a module resolution issue with ESM vs CJS?
-  const _Excalidraw =
-    Excalidraw.$$typeof != null ? Excalidraw : Excalidraw.default;
-
   return createPortal(
     <div style={ExcalidrawModalOverlayStyles} role="dialog">
       <div
@@ -237,7 +252,7 @@ export default function ExcalidrawModal({
         tabIndex={-1}>
         <div style={ExcalidrawModalRow}>
           {discardModalOpen && <ShowDiscardDialog />}
-          <_Excalidraw
+          <Excalidraw
             onChange={onChange}
             initialData={{
               appState: {isLoading: false},

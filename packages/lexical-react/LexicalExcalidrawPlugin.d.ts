@@ -17,8 +17,37 @@ import type {
 } from 'lexical';
 import {ElementNode} from 'lexical';
 
+export type Modal = ({
+  onClose,
+  children,
+  title,
+  closeOnClickOutside,
+}: {
+  children: JSX.Element | string | (JSX.Element | string)[];
+  closeOnClickOutside?: boolean;
+  onClose: () => void;
+  title: string;
+}) => JSX.Element;
+
+export type ExcalidrawElementFragment = {
+  isDeleted?: boolean;
+};
+
+export type Excalidraw = ({
+  onChange,
+  initialData,
+}: {
+  onChange: (els: ReadonlyArray<ExcalidrawElementFragment>) => void;
+  initialData: {
+    appState: {isLoading: boolean};
+    elements: ReadonlyArray<ExcalidrawElementFragment>;
+  };
+}) => JSX.Element;
+
 export declare class ExcalidrawNode extends ElementNode {
   __data: string;
+  __modal: Modal;
+  __excalidraw: Excalidraw;
   static getType(): string;
   static clone(node: ExcalidrawNode): ExcalidrawNode;
   constructor(data: string, key?: NodeKey);
@@ -37,8 +66,12 @@ export declare class ExcalidrawNode extends ElementNode {
   canBeEmpty(): false;
   isInline(): true;
 }
+
 export function convertAnchorElement(domNode: Node): DOMConversionOutput;
-export function $createExcalidrawNode(url: string): ExcalidrawNode;
+export function $createExcalidrawNode(
+  modalComponent: Modal,
+  excalidrawComponent: Excalidraw,
+): ExcalidrawNode;
 export function $isExcalidrawNode(
   node: ExcalidrawNode | LexicalNode | null | undefined,
 ): node is ExcalidrawNode;
@@ -50,4 +83,8 @@ export declare class AutoExcalidrawNode extends ExcalidrawNode {
 
 export const INSERT_EXCALIDRAW_COMMAND: LexicalCommand<void>;
 
-export function ExcalidrawPlugin(): JSX.Element;
+export function ExcalidrawPlugin({
+  modal: Modal,
+  excalidraw: Excalidraw,
+  excalidrawImage: ExcalidrawImage,
+}): JSX.Element;

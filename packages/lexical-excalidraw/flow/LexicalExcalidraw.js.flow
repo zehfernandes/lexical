@@ -37,7 +37,53 @@ declare export class ExcalidrawNode extends ElementNode {
   canBeEmpty(): false;
   isInline(): true;
 }
-declare export function $createExcalidrawNode(): ExcalidrawNode;
+type ImageType = 'svg' | 'canvas';
+
+export type ExcalidrawImageProps = {
+  /**
+   * Configures the export setting for SVG/Canvas
+   */
+  appState?: Partial<Omit<AppState, 'offsetTop' | 'offsetLeft'>> | null,
+  /**
+   * The css class applied to image to be rendered
+   */
+  className?: string,
+  /**
+   * The Excalidraw elements to be rendered as an image
+   */
+  elements: NonDeleted<ExcalidrawElement>[],
+  /**
+   * The height of the image to be rendered
+   */
+  height?: number | null,
+  /**
+   * The type of image to be rendered
+   */
+  imageType?: ImageType,
+  /**
+   * The css class applied to the root element of this component
+   */
+  rootClassName?: string | null,
+  /**
+   * The width of the image to be rendered
+   */
+  width?: number | null,
+
+  buttonRef: {current: null | HTMLButtonElement},
+  isSelected: boolean,
+  isResizing: boolean,
+  onResizeStart: () => void,
+  onResizeEnd: () => void,
+  editor: LexicalEditor,
+};
+
+export type ExcalidrawImage = (props: ExcalidrawImageProps) => JSX.Element;
+
+declare export function $createExcalidrawNode(
+  excalidrawComponent: Excalidraw,
+  excalidrawImage: ExcalidrawImage,
+  modalComponent: Modal,
+): ExcalidrawNode;
 declare export function $isExcalidrawNode(
   node: ?LexicalNode,
 ): boolean %checks(node instanceof ExcalidrawNode);
