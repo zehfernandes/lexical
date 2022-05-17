@@ -6,14 +6,11 @@
  *
  */
 
-import './ExcalidrawModal.css';
-
 import Excalidraw from '@excalidraw/excalidraw';
 import * as React from 'react';
 import {ReactPortal, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 
-import Button from '../../lexical-playground/src/ui/Button';
 import Modal from '../../lexical-playground/src/ui/Modal';
 
 export type ExcalidrawElementFragment = {
@@ -43,6 +40,75 @@ type ModalProps = {
    */
   onSave: (elements: ReadonlyArray<ExcalidrawElementFragment>) => void;
 };
+
+const ExcalidrawModalOverlayStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  position: 'fixed',
+  flexDirection: 'column',
+  top: '0px',
+  bottom: '0px',
+  left: '0px',
+  right: '0px',
+  flexGrow: '0px',
+  flexShrink: '1px',
+  zIndex: '100',
+  backgroundColor: 'rgba(40, 40, 40, 0.6)',
+} as const;
+
+const ExcalidrawModalActions = {
+  textAlign: 'end',
+  position: 'absolute',
+  right: '5px',
+  top: '5px',
+  zIndex: '1',
+} as const;
+
+const ExcalidrawModalActionButton = {
+  backgroundColor: '#fff',
+  borderRadius: '5px',
+  border: '0',
+  padding: '8px 12px',
+  position: 'relative',
+  marginLeft: '5px',
+  color: '#222',
+  display: 'inline-block',
+  cursor: 'pointer',
+} as const;
+
+const ExcalidrawModalDiscardActionButton = {
+  ...ExcalidrawModalActionButton,
+  backgroundColor: '#eee',
+}
+
+const ExcalidrawModalRow = {
+  position: 'relative',
+  padding: '40px 5px 5px',
+  width: '70vw',
+  height: '70vh',
+  borderRadius: '8px',
+  boxShadow: '0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5)',
+} as const;
+
+const ExcalidrawModalModal = {
+  position: 'relative',
+  zIndex: '10',
+  top: '50px',
+  width: 'auto',
+  left: '0',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '8px',
+  backgroundColor: '#eee',
+} as const;
+
+const ExcalidrawModalDiscardModal = {
+  marginTop: '60px',
+  textAlign: 'center',
+} as const;
+
+
 
 /**
  * @explorer-desc
@@ -124,20 +190,22 @@ export default function ExcalidrawModal({
         }}
         closeOnClickOutside={true}>
         Are you sure you want to discard the changes?
-        <div className="ExcalidrawModal__discardModal">
-          <Button
+        <div style={ExcalidrawModalDiscardModal}>
+          <button
+            style={ExcalidrawModalDiscardActionButton}
             onClick={() => {
               setDiscardModalOpen(false);
               onHide();
             }}>
             Discard
-          </Button>{' '}
-          <Button
+          </button>{' '}
+          <button
+            style={ExcalidrawModalDiscardActionButton}
             onClick={() => {
               setDiscardModalOpen(false);
             }}>
             Cancel
-          </Button>
+          </button>
         </div>
       </Modal>
     );
@@ -162,12 +230,12 @@ export default function ExcalidrawModal({
     Excalidraw.$$typeof != null ? Excalidraw : Excalidraw.default;
 
   return createPortal(
-    <div className="ExcalidrawModal__overlay" role="dialog">
+    <div style={ExcalidrawModalOverlayStyles} role="dialog">
       <div
-        className="ExcalidrawModal__modal"
+        style={ExcalidrawModalModal}
         ref={excaliDrawModelRef}
         tabIndex={-1}>
-        <div className="ExcalidrawModal__row">
+        <div style={ExcalidrawModalRow}>
           {discardModalOpen && <ShowDiscardDialog />}
           <_Excalidraw
             onChange={onChange}
@@ -176,11 +244,11 @@ export default function ExcalidrawModal({
               elements: initialElements,
             }}
           />
-          <div className="ExcalidrawModal__actions">
-            <button className="action-button" onClick={discard}>
+          <div style={ExcalidrawModalActions}>
+            <button className="action-button" style={ExcalidrawModalActionButton} onClick={discard}>
               Discard
             </button>
-            <button className="action-button" onClick={save}>
+            <button className="action-button" style={ExcalidrawModalActionButton} onClick={save}>
               Save
             </button>
           </div>
