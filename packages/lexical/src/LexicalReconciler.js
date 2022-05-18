@@ -728,7 +728,7 @@ export function updateEditorState(
   pendingSelection: RangeSelection | NodeSelection | GridSelection | null,
   needsUpdate: boolean,
   editor: LexicalEditor,
-): null | MutatedNodes {
+): [null | MutatedNodes, boolean] {
   const observer = editor._observer;
   let reconcileMutatedNodes = null;
   if (needsUpdate && observer !== null) {
@@ -756,12 +756,13 @@ export function updateEditorState(
   }
 
   const domSelection = getDOMSelection();
+  let needsFocus = false;
   if (
     !editor._readOnly &&
     domSelection !== null &&
     (needsUpdate || pendingSelection === null || pendingSelection.dirty)
   ) {
-    reconcileSelection(
+    needsFocus = reconcileSelection(
       currentSelection,
       pendingSelection,
       editor,
@@ -769,7 +770,7 @@ export function updateEditorState(
     );
   }
 
-  return reconcileMutatedNodes;
+  return [reconcileMutatedNodes, needsFocus];
 }
 
 function scrollIntoViewIfNeeded(
@@ -805,7 +806,7 @@ function reconcileSelection(
   nextSelection: RangeSelection | NodeSelection | GridSelection | null,
   editor: LexicalEditor,
   domSelection: Selection,
-): void {
+): boolean {
   const anchorDOMNode = domSelection.anchorNode;
   const focusDOMNode = domSelection.focusNode;
   const anchorOffset = domSelection.anchorOffset;
@@ -818,7 +819,7 @@ function reconcileSelection(
     editor._updateTags.has('collaboration') &&
     activeElement !== rootElement
   ) {
-    return;
+    return false;
   }
 
   if (!$isRangeSelection(nextSelection)) {
@@ -832,7 +833,7 @@ function reconcileSelection(
     ) {
       domSelection.removeAllRanges();
     }
-    return;
+    return false;
   }
   const anchor = nextSelection.anchor;
   const focus = nextSelection.focus;
@@ -864,7 +865,7 @@ function reconcileSelection(
   // If we can't get an underlying text node for selection, then
   // we should avoid setting selection to something incorrect.
   if (nextAnchorNode === null || nextFocusNode === null) {
-    return;
+    return false;
   }
 
   if (
@@ -880,6 +881,7 @@ function reconcileSelection(
       performance.now(),
     );
   }
+  let needsFocus = false;
 
   // Diff against the native DOM selection to ensure we don't do
   // an unnecessary selection update. We also skip this check if
@@ -894,17 +896,14 @@ function reconcileSelection(
     !(domSelection.type === 'Range' && isCollapsed)
   ) {
     // If the root element does not have focus, ensure it has focus
-    if (
+    needsFocus =
       rootElement !== null &&
-      (activeElement === null || !rootElement.contains(activeElement))
-    ) {
-      rootElement.focus({preventScroll: true});
-    }
+      (activeElement === null || !rootElement.contains(activeElement));
     // In Safari/iOS if we have selection on an element, then we also
     // need to additionally set the DOM selection, otherwise a selectionchange
     // event will not fire.
     if (!(IS_IOS || IS_SAFARI) || anchor.type !== 'element') {
-      return;
+      return needsFocus;
     }
   }
 
@@ -926,6 +925,8 @@ function reconcileSelection(
     // occur with FF and there's no good reason as to why it
     // should happen.
   }
+
+  return needsFocus;
 }
 
 export function storeDOMWithKey(
