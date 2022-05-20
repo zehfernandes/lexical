@@ -15,6 +15,7 @@ import type {
   NodeSelection,
   Point,
   RangeSelection,
+  TextNode,
 } from 'lexical';
 export function $cloneContents(
   selection: RangeSelection | NodeSelection | GridSelection,
@@ -24,6 +25,10 @@ export function $cloneContents(
 };
 export function $cloneWithProperties<LexicalNode>(
   node: LexicalNode,
+): LexicalNode;
+export function $splitTextNode(
+  selection: RangeSelection | GridSelection | NodeSelection,
+  node: TextNode,
 ): LexicalNode;
 export function getStyleObjectFromCSS(css: string): {
   [key: string]: string;
