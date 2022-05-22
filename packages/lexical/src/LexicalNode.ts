@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -9,9 +10,7 @@
 import type {EditorConfig, LexicalEditor} from './LexicalEditor';
 import type {RangeSelection} from './LexicalSelection';
 
-import {__DEV__} from 'libdefs/global';
 import invariant from 'shared-ts/invariant';
-import {Class} from 'utility-types';
 
 import {
   $isDecoratorNode,
@@ -43,7 +42,7 @@ import {
 } from './LexicalUtils';
 import {RootNode} from './nodes/LexicalRootNode';
 
-export type NodeMap<T extends LexicalNode = LexicalNode> = Map<NodeKey, T>;
+export type NodeMap = Map<NodeKey, LexicalNode>;
 
 export type SerializedLexicalNode = {
   type: string;
@@ -88,7 +87,7 @@ export function removeNode(
     }
   }
 
-  const writableParent = parent.getWritable();
+  const writableParent = parent.getWritable<ElementNode>();
   const parentChildren = writableParent.__children;
   const index = parentChildren.indexOf(key);
   if (index === -1) {
@@ -116,7 +115,7 @@ export function removeNode(
   }
 }
 
-export function $getNodeByKeyOrThrow<N = LexicalNode>(key: NodeKey): N {
+export function $getNodeByKeyOrThrow<N extends LexicalNode>(key: NodeKey): N {
   const node = $getNodeByKey<N>(key);
   if (node === null) {
     invariant(
@@ -153,11 +152,12 @@ export type DOMExportOutput = {
   after?: (
     generatedElement: HTMLElement | null | undefined,
   ) => HTMLElement | null | undefined;
-  element?: HTMLElement | null;
+  element: HTMLElement | null;
 };
 export type NodeKey = string;
 
 export class LexicalNode {
+  [x: string]: any;
   __type: string;
   __key: NodeKey;
   __parent: null | NodeKey;
@@ -167,14 +167,15 @@ export class LexicalNode {
   // a static getType and clone method though. We define getType and clone here so we can call it
   // on any  Node, and we throw this error by default since the subclass should provide
   // their own implementation.
-  static getType() {
+  static getType(): string {
     invariant(
       false,
       'LexicalNode: Node %s does not implement .getType().',
       this.name,
     );
   }
-  static clone(_data: unknown) {
+
+  static clone(_data: unknown): LexicalNode {
     invariant(
       false,
       'LexicalNode: Node %s does not implement .clone().',
@@ -183,14 +184,17 @@ export class LexicalNode {
   }
 
   constructor(key?: NodeKey) {
+    // @ts-expect-error
     this.__type = this.constructor.getType();
     this.__parent = null;
     $setNodeKey(this, key);
 
     // Ensure custom nodes implement required methods.
+    // @ts-ignore
     if (__DEV__) {
       const proto = Object.getPrototypeOf(this);
       ['getType', 'clone'].forEach((method) => {
+        // eslint-disable-next-line no-prototype-builtins
         if (!proto.constructor.hasOwnProperty(method)) {
           console.warn(
             `${this.constructor.name} must implement static "${method}" method`,
@@ -199,7 +203,11 @@ export class LexicalNode {
       });
       if (this.__type !== 'root') {
         errorOnReadOnly();
-        errorOnTypeKlassMismatch(this.__type, this.constructor);
+        errorOnTypeKlassMismatch(
+          this.__type,
+          // @ts-expect-error
+          this.constructor,
+        );
       }
     }
   }
@@ -280,10 +288,10 @@ export class LexicalNode {
     return parent;
   }
 
-  getTopLevelElement(): RootNode | null {
-    let node;
-    while (this !== null) {
-      const parent = this.getParent();
+  getTopLevelElement(): RootNode | this | null {
+    let node: RootNode | this = this;
+    while (node !== null) {
+      const parent = node.getParent();
       if ($isRootNode(parent)) {
         return node;
       }
@@ -292,7 +300,7 @@ export class LexicalNode {
     return null;
   }
 
-  getTopLevelElementOrThrow(): RootNode {
+  getTopLevelElementOrThrow(): RootNode | this {
     const parent = this.getTopLevelElement();
     if (parent === null) {
       invariant(
@@ -375,10 +383,13 @@ export class LexicalNode {
       .map((childKey) => $getNodeByKeyOrThrow<T>(childKey));
   }
 
-  getCommonAncestor<T extends ElementNode>(node: LexicalNode): T | null {
+  getCommonAncestor<T extends ElementNode = ElementNode>(
+    node: LexicalNode,
+  ): T | null {
     const a = this.getParents<T>();
     const b = node.getParents();
     if ($isElementNode(this)) {
+      // @ts-expect-error
       a.unshift(this);
     }
     if ($isElementNode(node)) {
@@ -416,8 +427,7 @@ export class LexicalNode {
     const commonAncestor = this.getCommonAncestor(targetNode);
     let indexA = 0;
     let indexB = 0;
-    let node = this;
-    // eslint-disable-next-line no-constant-condition
+    let node: this | ElementNode | LexicalNode = this;
     while (true) {
       const parent = node.getParentOrThrow();
       if (parent === commonAncestor) {
@@ -427,7 +437,6 @@ export class LexicalNode {
       node = parent;
     }
     node = targetNode;
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const parent = node.getParentOrThrow();
       if (parent === commonAncestor) {
@@ -470,16 +479,16 @@ export class LexicalNode {
       }
       const child = $isElementNode(node)
         ? isBefore
-          ? node.getFirstChild()
-          : node.getLastChild()
+          ? node.getFirstChild<this>()
+          : node.getLastChild<this>()
         : null;
       if (child !== null) {
         node = child;
         continue;
       }
       const nextSibling = isBefore
-        ? node.getNextSibling()
-        : node.getPreviousSibling();
+        ? node.getNextSibling<this>()
+        : node.getPreviousSibling<this>();
       if (nextSibling !== null) {
         node = nextSibling;
         continue;
@@ -528,7 +537,6 @@ export class LexicalNode {
     }
     return latest;
   }
-  // $FlowFixMe this is LexicalNode
   getWritable<T extends LexicalNode>(): T {
     errorOnReadOnly();
     const editorState = getActiveEditorState();
@@ -536,7 +544,7 @@ export class LexicalNode {
     const nodeMap = editorState._nodeMap;
     const key = this.__key;
     // Ensure we get the latest node from pending state
-    const latestNode = this.getLatest();
+    const latestNode = this.getLatest<T>();
     const parent = latestNode.__parent;
     const cloneNotNeeded = editor._cloneNotNeeded;
     const selection = $getSelection();
@@ -549,6 +557,7 @@ export class LexicalNode {
       return latestNode;
     }
     const constructor = latestNode.constructor;
+    // @ts-expect-error
     const mutableNode = constructor.clone(latestNode);
     mutableNode.__parent = parent;
     if ($isElementNode(latestNode) && $isElementNode(mutableNode)) {
@@ -587,18 +596,24 @@ export class LexicalNode {
 
   // View
 
-  createDOM(_config: EditorConfig, _editor: LexicalEditor) {
+  createDOM(_config: EditorConfig, _editor: LexicalEditor): HTMLElement {
     invariant(false, 'createDOM: base method not extended');
   }
 
-  updateDOM(_prevNode: unknown, _dom: HTMLElement, _config: EditorConfig) {
+  updateDOM(
+    _prevNode: unknown,
+    _dom: HTMLElement,
+    _config: EditorConfig,
+  ): boolean {
     invariant(false, 'updateDOM: base method not extended');
   }
 
   exportDOM(editor: LexicalEditor): DOMExportOutput {
     if ($isDecoratorNode(this)) {
       const element = editor.getElementByKey(this.getKey());
-      return {element: element ? element.cloneNode() : null};
+      return {
+        element: element ? (element.cloneNode() as HTMLElement) : null,
+      };
     }
 
     const element = this.createDOM(editor._config, editor);
@@ -610,11 +625,11 @@ export class LexicalNode {
     return null;
   }
 
-  exportJSON() {
+  exportJSON(): SerializedLexicalNode {
     invariant(false, 'exportJSON: base method not extended');
   }
 
-  static importJSON(_serializedNode: SerializedLexicalNode) {
+  static importJSON(_serializedNode: SerializedLexicalNode): LexicalNode {
     invariant(
       false,
       'LexicalNode: Node %s does not implement .importJSON().',
@@ -635,7 +650,7 @@ export class LexicalNode {
     const writableReplaceWith = replaceWith.getWritable();
     removeFromParent(writableReplaceWith);
     const newParent = this.getParentOrThrow();
-    const writableParent = newParent.getWritable();
+    const writableParent = newParent.getWritable<ElementNode>();
     const children = writableParent.__children;
     const index = children.indexOf(this.__key);
     const newKey = writableReplaceWith.__key;
@@ -663,7 +678,7 @@ export class LexicalNode {
     return writableReplaceWith;
   }
 
-  insertAfter(nodeToInsert: LexicalNode): LexicalNode {
+  insertAfter<T extends LexicalNode>(nodeToInsert: T): T {
     errorOnReadOnly();
     const writableSelf = this.getWritable();
     const writableNodeToInsert = nodeToInsert.getWritable();
@@ -688,7 +703,7 @@ export class LexicalNode {
           focus.offset === oldIndex + 1;
       }
     }
-    const writableParent = this.getParentOrThrow().getWritable();
+    const writableParent = this.getParentOrThrow().getWritable<ElementNode>();
     const insertKey = writableNodeToInsert.__key;
     writableNodeToInsert.__parent = writableSelf.__parent;
     const children = writableParent.__children;
@@ -715,12 +730,12 @@ export class LexicalNode {
     return nodeToInsert;
   }
 
-  insertBefore(nodeToInsert: LexicalNode): LexicalNode {
+  insertBefore<T extends LexicalNode>(nodeToInsert: T): T {
     errorOnReadOnly();
     const writableSelf = this.getWritable();
     const writableNodeToInsert = nodeToInsert.getWritable();
     removeFromParent(writableNodeToInsert);
-    const writableParent = this.getParentOrThrow().getWritable();
+    const writableParent = this.getParentOrThrow().getWritable<ElementNode>();
     const insertKey = writableNodeToInsert.__key;
     writableNodeToInsert.__parent = writableSelf.__parent;
     const children = writableParent.__children;
@@ -780,7 +795,7 @@ export class LexicalNode {
 
 function errorOnTypeKlassMismatch(
   type: string,
-  klass: Class<LexicalNode>,
+  klass: typeof LexicalNode,
 ): void {
   const registeredNode = getActiveEditor()._nodes.get(type);
   // Common error - split in its own invariant
@@ -797,8 +812,6 @@ function errorOnTypeKlassMismatch(
       false,
       'Create node: Type %s in node %s does not match registered node %s with the same type',
       type,
-      klass.name,
-      editorKlass.name,
     );
   }
 }
