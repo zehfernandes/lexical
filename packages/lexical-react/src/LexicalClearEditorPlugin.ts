@@ -13,7 +13,7 @@ import {
   CLEAR_EDITOR_COMMAND,
   COMMAND_PRIORITY_EDITOR,
 } from 'lexical';
-import useLayoutEffect from 'shared-ts/useLayoutEffect';
+import useLayoutEffect from 'shared/useLayoutEffect';
 
 import {useLexicalComposerContext} from './LexicalComposerContext';
 

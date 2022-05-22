@@ -11,7 +11,7 @@ import type {EditorThemeClasses, LexicalEditor} from 'lexical';
 
 import * as React from 'react';
 import {useContext, useMemo} from 'react';
-import invariant from 'shared-ts/invariant';
+import invariant from 'shared/invariant';
 
 import {useCollaborationContext} from './LexicalCollaborationPlugin';
 import {

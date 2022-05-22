@@ -26,7 +26,7 @@ import {
   COMMAND_PRIORITY_EDITOR,
 } from 'lexical';
 import {useEffect} from 'react';
-import invariant from 'shared-ts/invariant';
+import invariant from 'shared/invariant';
 
 import {useLexicalComposerContext} from './LexicalComposerContext';
 

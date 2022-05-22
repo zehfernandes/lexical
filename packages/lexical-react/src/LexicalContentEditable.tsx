@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import {CSSProperties, useCallback, useState} from 'react';
-import useLayoutEffect from 'shared-ts/useLayoutEffect';
+import useLayoutEffect from 'shared/useLayoutEffect';
 
 import {useLexicalComposerContext} from './LexicalComposerContext';
 
