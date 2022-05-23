@@ -24,7 +24,6 @@ import {
   $createTextNode,
   $getNodeByKey,
   $getRoot,
-  $getSelection,
   $isTextNode,
   $setCompositionKey,
   $setSelection,
@@ -980,31 +979,10 @@ describe('LexicalEditor tests', () => {
     let originalText;
     let parsedParagraph;
     let parsedRoot;
-    let parsedSelection;
     let parsedText;
     let paragraphKey;
     let textKey;
     let parsedEditorState;
-
-    it('parses parsed JSON', async () => {
-      await update(() => {
-        const paragraph = $createParagraphNode();
-        originalText = $createTextNode('Hello world');
-        originalText.select(6, 11);
-        paragraph.append(originalText);
-        $getRoot().append(paragraph);
-      });
-      const stringifiedEditorState = JSON.stringify(
-        editor.getEditorState().toJSON(),
-      );
-      const parsedEditorStateFromObject = editor.parseEditorState(
-        JSON.parse(stringifiedEditorState),
-      );
-      parsedEditorStateFromObject.read(() => {
-        const root = $getRoot();
-        expect(root.getTextContent()).toMatch(/Hello world/);
-      });
-    });
 
     it('exportJSON API - parses parsed JSON', async () => {
       await update(() => {
@@ -1014,10 +992,8 @@ describe('LexicalEditor tests', () => {
         paragraph.append(originalText);
         $getRoot().append(paragraph);
       });
-      const stringifiedEditorState = JSON.stringify(
-        editor.getEditorState().unstable_toJSON(),
-      );
-      const parsedEditorStateFromObject = editor.unstable_parseEditorState(
+      const stringifiedEditorState = JSON.stringify(editor.getEditorState());
+      const parsedEditorStateFromObject = editor.parseEditorState(
         JSON.parse(stringifiedEditorState),
       );
       parsedEditorStateFromObject.read(() => {
@@ -1046,7 +1022,6 @@ describe('LexicalEditor tests', () => {
           paragraphKey = parsedParagraph.getKey();
           parsedText = parsedParagraph.getFirstChild();
           textKey = parsedText.getKey();
-          parsedSelection = $getSelection();
         });
       });
 
@@ -1089,18 +1064,6 @@ describe('LexicalEditor tests', () => {
         expect(parsedEditorState.read(() => $getRoot().getTextContent())).toBe(
           'Hello world',
         );
-      });
-
-      it('Parses the selection offsets of a stringified editor state', async () => {
-        expect(parsedSelection.anchor.offset).toEqual(6);
-        expect(parsedSelection.focus.offset).toEqual(11);
-      });
-
-      it('Remaps the selection keys of a stringified editor state', async () => {
-        expect(parsedSelection.anchor.key).not.toEqual(originalText.__key);
-        expect(parsedSelection.focus.key).not.toEqual(originalText.__key);
-        expect(parsedSelection.anchor.key).toEqual(parsedText.__key);
-        expect(parsedSelection.focus.key).toEqual(parsedText.__key);
       });
     });
 
@@ -1126,7 +1089,6 @@ describe('LexicalEditor tests', () => {
           paragraphKey = parsedParagraph.getKey();
           parsedText = parsedParagraph.getFirstChild();
           textKey = parsedText.getKey();
-          parsedSelection = $getSelection();
         });
       });
 
@@ -1169,15 +1131,6 @@ describe('LexicalEditor tests', () => {
         expect(parsedEditorState.read(() => $getRoot().getTextContent())).toBe(
           'Hello world',
         );
-      });
-
-      it('Parses the selection nodes of a stringified editor state', async () => {
-        expect(Array.from(parsedSelection._nodes)).toEqual([textKey]);
-      });
-
-      it('Remaps the selection keys of a stringified editor state', async () => {
-        expect(parsedSelection._nodes.has(originalText.__key)).toEqual(false);
-        expect(parsedSelection._nodes.has(parsedText.__key)).toEqual(true);
       });
     });
 
@@ -1207,7 +1160,6 @@ describe('LexicalEditor tests', () => {
           paragraphKey = parsedParagraph.getKey();
           parsedText = parsedParagraph.getFirstChild();
           textKey = parsedText.getKey();
-          parsedSelection = $getSelection();
         });
       });
 
@@ -1250,15 +1202,6 @@ describe('LexicalEditor tests', () => {
         expect(parsedEditorState.read(() => $getRoot().getTextContent())).toBe(
           'Hello world',
         );
-      });
-
-      it('Remaps the selection keys of a stringified editor state', async () => {
-        expect(parsedSelection.gridKey).not.toEqual(originalText.__key);
-        expect(parsedSelection.anchor.key).not.toEqual(originalText.__key);
-        expect(parsedSelection.focus.key).not.toEqual(originalText.__key);
-        expect(parsedSelection.gridKey).toEqual(parsedText.__key);
-        expect(parsedSelection.anchor.key).toEqual(parsedText.__key);
-        expect(parsedSelection.focus.key).toEqual(parsedText.__key);
       });
     });
   });
