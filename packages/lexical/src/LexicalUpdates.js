@@ -290,11 +290,9 @@ export function parseEditorState(
   const previousActiveEditor = activeEditor;
   const previousDirtyElements = editor._dirtyElements;
   const previousDirtyLeaves = editor._dirtyLeaves;
-  const previousNormalizedNodes = editor._normalizedNodes;
   const previousCloneNotNeeded = editor._cloneNotNeeded;
   editor._dirtyElements = new Map();
   editor._dirtyLeaves = new Set();
-  editor._normalizedNodes = new Set();
   editor._cloneNotNeeded = new Set();
   activeEditorState = editorState;
   isReadOnlyMode = false;
@@ -315,7 +313,6 @@ export function parseEditorState(
   } finally {
     editor._dirtyElements = previousDirtyElements;
     editor._dirtyLeaves = previousDirtyLeaves;
-    editor._normalizedNodes = previousNormalizedNodes;
     editor._cloneNotNeeded = previousCloneNotNeeded;
     activeEditorState = previousActiveEditorState;
     isReadOnlyMode = previousReadOnlyMode;
