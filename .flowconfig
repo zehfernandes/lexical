@@ -9,6 +9,7 @@
 
 [include]
 ./packages/
+./new
 
 [lints]
 untyped-type-import=error
